@@ -303,11 +303,48 @@ body {
   transform: scale(1.1);
 }
 
-/* Theme Switcher Toggle Button */
+/* Header Actions & Language Selector */
 .header-actions {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.lang-selector {
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  gap: 3px;
+}
+
+.lang-btn {
+  padding: 5px 11px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-main);
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lang-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+}
+
+.lang-btn.active {
+  background: var(--orange-primary);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px var(--orange-glow);
 }
 
 .theme-toggle-btn {
@@ -617,15 +654,15 @@ body {
   transform: translateY(-1px);
 }
 
-/* Quick Chips */
+/* Quick Chips - Responsive wrapping without horizontal scrollbar */
 .quick-chips-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   margin-bottom: 20px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border-subtle);
-  overflow-x: auto;
+  flex-wrap: wrap;
 }
 
 .chips-label {
@@ -634,6 +671,7 @@ body {
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  padding-top: 6px;
   white-space: nowrap;
 }
 
@@ -641,8 +679,8 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 2px;
+  flex-wrap: wrap;
+  flex: 1 1 280px;
 }
 
 .filter-chip {
@@ -1415,6 +1453,37 @@ select:focus {
   font-size: 0.72rem;
   letter-spacing: 0.05em;
   border-bottom: 1px solid var(--border-subtle);
+  transition: var(--transition);
+}
+
+.reliability-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.reliability-table th.sortable:hover {
+  color: var(--orange-primary);
+  background: var(--bg-surface-hover);
+}
+
+.reliability-table th.sortable.active {
+  color: var(--orange-primary);
+  border-bottom: 2px solid var(--orange-primary);
+  background: var(--orange-subtle);
+}
+
+.sort-icon {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+
+.reliability-table th.sortable.active .sort-icon {
+  color: var(--orange-primary);
+  font-weight: 900;
 }
 
 .reliability-table td {
