@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# Raw XML files & data exports (must not be committed)
+raw-data/
+*.xml
+*.log
+
+# Environment variables
+.env*.local
+.env
+
+# Vercel / IDE
+.vercel
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+Thumbs.db
+[Dd]esktop.ini
+.DS_Store
