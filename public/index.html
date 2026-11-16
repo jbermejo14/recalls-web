@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RECALLSCOPE | Consultor de Campañas de Llamada a Revisión & Fiabilidad</title>
+  <meta name="description" content="Consultor oficial de llamadas a revisión (recalls), defectos de seguridad y fiabilidad por modelo de vehículos basado en la base de datos oficial Safety Gate de la Unión Europea.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Chart.js for analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <aside class="top-banner" aria-label="Información de base de datos">
+    <div class="banner-inner container">
+      <div class="banner-left">
+        <span class="pulse-indicator"></span>
+        <span class="banner-tag">BASE DE DATOS XML ACTIVA</span>
+        <span class="banner-text" id="bannerDbText">Cargando base de datos oficial Safety Gate...</span>
+      </div>
+      <div class="banner-right">
+        <span class="badge-year">Datos: 2005 - 2026</span>
+        <span class="badge-eu">🇪🇺 Comisión Europea (RAPEX)</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Navigation Header -->
+  <header class="app-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <div class="logo-icon-wrap">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <div class="logo-glow"></div>
+        </div>
+        <div class="logo-titles">
+          <div class="brand-title">RECALL<span class="accent-text">SCOPE</span></div>
+          <div class="brand-subtitle">Consultor de Recalls & Fiabilidad Automotriz</div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs" id="navTabs">
+        <button class="nav-tab active" data-tab="tab-search">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <span>Buscador de Campañas</span>
+        </button>
+        <button class="nav-tab" data-tab="tab-reliability">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Índice de Fiabilidad</span>
+        </button>
+        <button class="nav-tab" data-tab="tab-comparator">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+          <span>Comparador</span>
+        </button>
+        <button class="nav-tab" data-tab="tab-used-car">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+          <span>Asesor Pre-Compra</span>
+        </button>
+        <button class="nav-tab" data-tab="tab-stats">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <span>Estadísticas</span>
+        </button>
+        <button class="nav-tab" data-tab="tab-database">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+          <span>Base de Datos XML</span>
+        </button>
+      </nav>
+
+      <!-- Theme Switcher & Actions -->
+      <div class="header-actions">
+        <!-- Modo Claro / Modo Oscuro Toggle Button -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Cambiar a Modo Claro / Oscuro" aria-label="Cambiar tema de color">
+          <div class="theme-toggle-track">
+            <span class="theme-icon moon-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            </span>
+            <span class="theme-icon sun-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </span>
+            <div class="theme-toggle-thumb"></div>
+          </div>
+          <span class="theme-label" id="themeLabel">Modo Oscuro</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Areas -->
+  <main class="main-wrapper">
+
+    <!-- ========================================================== -->
+    <!-- TAB 1: BUSCADOR DE CAMPAÑAS DE LLAMADA A REVISIÓN -->
+    <!-- ========================================================== -->
+    <section class="tab-section active" id="tab-search">
+      <div class="container">
+
+        <!-- Hero Stats Banner -->
+        <div class="hero-stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon-box orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="heroTotalRecalls">6,457</div>
+              <div class="stat-title">Campañas de Revisión</div>
+              <div class="stat-desc">Registros oficiales en el XML</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box fire">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/></svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="heroFireRecalls">1,163</div>
+              <div class="stat-title">Riesgo de Fuego</div>
+              <div class="stat-desc">Fugas, cableado e inyección</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="heroAirbagRecalls">676</div>
+              <div class="stat-title">Airbags & Takata</div>
+              <div class="stat-desc">Proyectiles y fallo inflador</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box dark">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number" id="heroBrandsCount">672</div>
+              <div class="stat-title">Marcas Indexadas</div>
+              <div class="stat-desc">Turismos, motos y vehículos comerciales</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Big Search Bar & Filter Section -->
+        <div class="search-panel">
+          <div class="search-input-wrapper">
+            <div class="search-lens-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </div>
+            <input type="text" id="mainSearchInput" class="main-search-input" placeholder="Buscar por marca, modelo (ej: 3008, Clase A, Qashqai, Golf), código de recall (K07, Takata), número de caso o defecto..." autocomplete="off">
+            <button class="clear-search-btn" id="clearSearchBtn" title="Limpiar búsqueda" style="display:none;">✕</button>
+            <button class="search-action-btn" id="doSearchBtn">
+              <span>Buscar</span>
+            </button>
+          </div>
+
+          <!-- Quick Failure System Chips -->
+          <div class="quick-chips-row">
+            <span class="chips-label">Filtros Rápidos:</span>
+            <div class="chips-scroll" id="quickChips">
+              <button class="filter-chip active" data-component="all">Todos los Sistemas</button>
+              <button class="filter-chip" data-component="Fuego / Combustible">🔥 Fuego / Combustible</button>
+              <button class="filter-chip" data-component="Airbag">💥 Airbags / Takata</button>
+              <button class="filter-chip" data-component="Frenos / ABS">🛑 Frenos / ABS</button>
+              <button class="filter-chip" data-component="Batería / EV">⚡ Batería / EV e Híbridos</button>
+              <button class="filter-chip" data-component="Dirección">🔄 Dirección y Eje</button>
+              <button class="filter-chip" data-component="Suspensión / Ejes">🛠️ Suspensión / Chasis</button>
+              <button class="filter-chip" data-component="Software / Sensores">💻 Software / ADAS</button>
+              <button class="filter-chip" data-component="Cinturones / Asientos">💺 Cinturones y Asientos</button>
+            </div>
+          </div>
+
+          <!-- Advanced Filters Accordion / Row -->
+          <div class="filter-dropdowns-grid">
+            <!-- Brand Filter -->
+            <div class="filter-group">
+              <label for="filterBrand">Marca de Vehículo</label>
+              <div class="select-wrapper">
+                <select id="filterBrand">
+                  <option value="all">Todas las Marcas (672 marcas)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Risk Filter -->
+            <div class="filter-group">
+              <label for="filterRisk">Tipo de Riesgo</label>
+              <div class="select-wrapper">
+                <select id="filterRisk">
+                  <option value="all">Todos los Riesgos</option>
+                  <option value="Injuries">Lesiones (Injuries)</option>
+                  <option value="Fire">Incendio (Fire)</option>
+                  <option value="Environment">Medio Ambiente / Emisiones</option>
+                  <option value="Burns">Quemaduras</option>
+                  <option value="Chemical">Químico</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Year Range -->
+            <div class="filter-group">
+              <label for="filterYearFrom">Año Publicación</label>
+              <div class="year-range-inputs">
+                <select id="filterYearFrom">
+                  <option value="">Desde (Cualquiera)</option>
+                  <!-- Populated dynamically -->
+                </select>
+                <span class="range-sep">-</span>
+                <select id="filterYearTo">
+                  <option value="">Hasta (2026)</option>
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Severity / Level -->
+            <div class="filter-group">
+              <label for="filterLevel">Nivel de Alerta</label>
+              <div class="select-wrapper">
+                <select id="filterLevel">
+                  <option value="all">Todos los Niveles</option>
+                  <option value="Serious risk">Serious risk (Grave)</option>
+                  <option value="Other risk level">Otros niveles</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Filters Bar & Reset -->
+          <div class="active-filters-bar" id="activeFiltersBar" style="display:none;">
+            <div class="active-tags" id="activeTagsContainer"></div>
+            <button class="reset-all-filters-btn" id="resetFiltersBtn">Limpiar todos los filtros</button>
+          </div>
+        </div>
+
+        <!-- Search Results Header (Count, Sort, Export) -->
+        <div class="results-header">
+          <div class="results-count-box">
+            <span class="results-count" id="resultsCount">Cargando campañas...</span>
+            <span class="results-sub" id="resultsSub"></span>
+          </div>
+
+          <div class="results-controls">
+            <div class="sort-select-wrapper">
+              <label for="sortBySelect">Ordenar por:</label>
+              <select id="sortBySelect">
+                <option value="date_desc">Más recientes primero (2026 → 2005)</option>
+                <option value="date_asc">Más antiguos primero</option>
+                <option value="severity">Mayor criticidad (Fuego / Grave)</option>
+                <option value="brand_asc">Marca (A → Z)</option>
+              </select>
+            </div>
+
+            <button class="export-btn" id="exportCsvBtn" title="Exportar resultados a CSV">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Exportar CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Recalls Grid -->
+        <div class="recalls-grid" id="recallsGrid">
+          <!-- Cards inserted dynamically -->
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="pagination-wrapper" id="paginationWrapper" style="display:none;">
+          <button class="page-btn" id="prevPageBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            <span>Anterior</span>
+          </button>
+          <div class="pages-numbers" id="pagesNumbers"></div>
+          <button class="page-btn" id="nextPageBtn">
+            <span>Siguiente</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <div class="page-summary" id="pageSummary">Página 1 de 1</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- TAB 2: ÍNDICE DE FIABILIDAD POR MARCA Y MODELO -->
+    <!-- ========================================================== -->
+    <section class="tab-section" id="tab-reliability">
+      <div class="container">
+        <div class="section-heading">
+          <div class="badge-pill orange">ÍNDICE OFICIAL AUTOMOTRIZ</div>
+          <h2>Consultor de Fiabilidad por Marca & Modelo</h2>
+          <p class="section-desc">Puntuación de fiabilidad (0 a 100) calculada algorítmicamente en base a las 6.457 alertas del Safety Gate. Pondera el volumen de llamadas, recurrencia de peligro de incendio, fallos en frenos y campañas críticas recientes.</p>
+        </div>
+
+        <!-- Rating Scale Legend -->
+        <div class="reliability-legend">
+          <div class="legend-card grade-a-plus">
+            <div class="legend-grade">A+</div>
+            <div class="legend-label">Excelente (90-100)</div>
+            <div class="legend-desc">Mínima tasa de alertas graves</div>
+          </div>
+          <div class="legend-card grade-a">
+            <div class="legend-grade">A</div>
+            <div class="legend-label">Muy Bueno (80-89)</div>
+            <div class="legend-desc">Incidencias aisladas o menores</div>
+          </div>
+          <div class="legend-card grade-b">
+            <div class="legend-grade">B</div>
+            <div class="legend-label">Aceptable (70-79)</div>
+            <div class="legend-desc">Campañas habituales de ajuste</div>
+          </div>
+          <div class="legend-card grade-c">
+            <div class="legend-grade">C</div>
+            <div class="legend-label">Atención (55-69)</div>
+            <div class="legend-desc">Recurrencia en componentes clave</div>
+          </div>
+          <div class="legend-card grade-d">
+            <div class="legend-grade">D / F</div>
+            <div class="legend-label">Alerta (&lt;55)</div>
+            <div class="legend-desc">Alto volumen de fuego / fallos graves</div>
+          </div>
+        </div>
+
+        <!-- Brand Selector for Deep Dossier -->
+        <div class="dossier-selector-card">
+          <div class="selector-header">
+            <h3>Selecciona una Marca para ver su Expediente Técnico de Fiabilidad</h3>
+            <p>Accede a estadísticas de componentes vulnerables, modelos más afectados y consejos de inspección.</p>
+          </div>
+          <div class="selector-body">
+            <div class="dossier-search-row">
+              <select id="dossierBrandSelect" class="dossier-select">
+                <option value="">Selecciona una marca...</option>
+              </select>
+              <button class="dossier-btn" id="loadDossierBtn">Consultar Expediente</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Brand Dossier Container (Dynamic) -->
+        <div class="brand-dossier-view" id="brandDossierView" style="display:none;">
+          <!-- Loaded dynamically -->
+        </div>
+
+        <!-- Brands Reliability Ranking Table -->
+        <div class="ranking-card">
+          <div class="ranking-header">
+            <h3>Ranking de Fiabilidad de las Principales Marcas</h3>
+            <div class="ranking-search-box">
+              <input type="text" id="rankingSearchInput" placeholder="Filtrar marcas en el ranking...">
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="reliability-table" id="reliabilityTable">
+              <thead>
+                <tr>
+                  <th>Marca</th>
+                  <th>Índice de Fiabilidad</th>
+                  <th>Calificación</th>
+                  <th>Total Recalls</th>
+                  <th>Riesgo Fuego</th>
+                  <th>Airbag / Takata</th>
+                  <th>Frenos / ABS</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="reliabilityTableBody">
+                <!-- Rows injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- TAB 3: COMPARADOR DE MODELOS -->
+    <!-- ========================================================== -->
+    <section class="tab-section" id="tab-comparator">
+      <div class="container">
+        <div class="section-heading">
+          <div class="badge-pill orange">HERRAMIENTA CARA A CARA</div>
+          <h2>Comparador de Fiabilidad & Llamadas a Revisión</h2>
+          <p class="section-desc">Compara directamente hasta 3 marcas o modelos para descubrir cuál tiene un historial más limpio, menos peligro de fuego y mayor seguridad a largo plazo.</p>
+        </div>
+
+        <div class="comparator-selector-box">
+          <div class="comparator-inputs-grid">
+            <div class="comp-col">
+              <label for="compareBrand1">Vehículo / Marca 1</label>
+              <select id="compareBrand1" class="compare-select">
+                <option value="">Selecciona primera marca...</option>
+              </select>
+            </div>
+            <div class="comp-vs-badge">VS</div>
+            <div class="comp-col">
+              <label for="compareBrand2">Vehículo / Marca 2</label>
+              <select id="compareBrand2" class="compare-select">
+                <option value="">Selecciona segunda marca...</option>
+              </select>
+            </div>
+            <div class="comp-vs-badge">VS</div>
+            <div class="comp-col">
+              <label for="compareBrand3">Vehículo / Marca 3 (Opcional)</label>
+              <select id="compareBrand3" class="compare-select">
+                <option value="">(Opcional) Tercera marca...</option>
+              </select>
+            </div>
+          </div>
+          <div class="comparator-btn-row">
+            <button class="primary-btn" id="runCompareBtn">Comparar Modelos Ahora</button>
+            <div class="quick-compare-presets">
+              <span>Comparativas Populares:</span>
+              <button class="preset-pill" data-brands="Peugeot,Renault,Citroën">🇫🇷 Peugeot vs Renault vs Citroën</button>
+              <button class="preset-pill" data-brands="BMW,Mercedes-Benz,Audi">🇩🇪 BMW vs Mercedes vs Audi</button>
+              <button class="preset-pill" data-brands="Toyota,Honda,Nissan">🇯🇵 Toyota vs Honda vs Nissan</button>
+              <button class="preset-pill" data-brands="Volkswagen,Ford,SEAT">🚗 VW vs Ford vs SEAT</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparison Matrix Result -->
+        <div class="comparison-results" id="comparisonResults" style="display:none;">
+          <!-- Loaded dynamically -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- TAB 4: ASESOR PRE-COMPRA (COCHES SEGUNDA MANO) -->
+    <!-- ========================================================== -->
+    <section class="tab-section" id="tab-used-car">
+      <div class="container">
+        <div class="section-heading">
+          <div class="badge-pill orange">INSPECCIÓN SEGUNDA MANO</div>
+          <h2>Asesor Técnico Pre-Compra & Alertas VIN</h2>
+          <p class="section-desc">¿Vas a comprar un coche de segunda mano? Comprueba en segundos si el modelo tiene llamadas a revisión críticas obligatorias que el anterior dueño debió subsanar en taller oficial.</p>
+        </div>
+
+        <div class="used-car-advisor-card">
+          <div class="advisor-form-grid">
+            <div class="form-field">
+              <label for="advisorBrand">1. Marca del Vehículo</label>
+              <select id="advisorBrand">
+                <option value="">Selecciona la marca...</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="advisorModel">2. Modelo (o escribe palabras clave)</label>
+              <input type="text" id="advisorModel" placeholder="Ej: 3008, Megane, Clase C, Golf, Qashqai, RAV4...">
+            </div>
+            <div class="form-field">
+              <label for="advisorYear">3. Año de Fabricación / Matriculación</label>
+              <select id="advisorYear">
+                <option value="">Cualquier año (2005 - 2026)</option>
+              </select>
+            </div>
+          </div>
+          <div class="advisor-action-row">
+            <button class="primary-btn" id="generateAdvisorReportBtn">Generar Diagnóstico Pre-Compra</button>
+          </div>
+        </div>
+
+        <!-- Advisor Diagnostic Report Output -->
+        <div class="advisor-report-view" id="advisorReportView" style="display:none;">
+          <!-- Injected dynamically -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- TAB 5: ESTADÍSTICAS & ANALÍTICA VISUAL -->
+    <!-- ========================================================== -->
+    <section class="tab-section" id="tab-stats">
+      <div class="container">
+        <div class="section-heading">
+          <div class="badge-pill orange">PANEL DE INTELIGENCIA DE DATOS</div>
+          <h2>Radiografía y Estadísticas Oficiales de Recalls</h2>
+          <p class="section-desc">Evolución temporal, análisis de componentes defectuosos y distribución de riesgos en los 6.457 registros del Safety Gate.</p>
+        </div>
+
+        <div class="stats-charts-grid">
+          <!-- Chart 1: Evolution over years -->
+          <div class="chart-card full-width">
+            <div class="chart-header">
+              <h3>Evolución Histórica de Llamadas a Revisión (2005 - 2026)</h3>
+              <span class="chart-badge">6.457 Alertas analizadas</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="yearsChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 2: Top Brands with most recalls -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Top 10 Marcas con Más Campañas de Revisión</h3>
+              <span class="chart-badge">Volumen total</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="topBrandsChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 3: Risk types distribution -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Distribución por Tipo de Riesgo</h3>
+              <span class="chart-badge">Fuego, Lesiones, Entorno</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="riskDonutChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 4: Components affected -->
+          <div class="chart-card full-width">
+            <div class="chart-header">
+              <h3>Sistemas y Componentes Críticos Más Afectados</h3>
+              <span class="chart-badge">Distribución de fallos mecánicos y electrónicos</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="componentsChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- TAB 6: BASE DE DATOS XML & GESTOR -->
+    <!-- ========================================================== -->
+    <section class="tab-section" id="tab-database">
+      <div class="container">
+        <div class="section-heading">
+          <div class="badge-pill orange">FUENTE DE DATOS PRIMARIA</div>
+          <h2>Gestor de la Base de Datos XML</h2>
+          <p class="section-desc">Información del archivo XML utilizado como backend, estadísticas de análisis y herramientas para recargar o actualizar datos en caliente.</p>
+        </div>
+
+        <div class="database-info-grid">
+          <div class="db-status-card">
+            <div class="db-card-header">
+              <div class="db-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+              </div>
+              <div>
+                <h3>Base de Datos XML Activa</h3>
+                <span class="badge-status-online">● Conectado y Verificado</span>
+              </div>
+            </div>
+            <div class="db-details-list">
+              <div class="db-row">
+                <span class="db-label">Archivo de Origen:</span>
+                <span class="db-val font-mono" id="dbFileName">search_list_notifications.xml</span>
+              </div>
+              <div class="db-row">
+                <span class="db-label">Ubicación física:</span>
+                <span class="db-val font-mono text-break" id="dbFilePath">data/search_list_notifications.xml</span>
+              </div>
+              <div class="db-row">
+                <span class="db-label">Tamaño del archivo:</span>
+                <span class="db-val" id="dbFileSize">10.94 MB</span>
+              </div>
+              <div class="db-row">
+                <span class="db-label">Total de Campañas Registradas:</span>
+                <span class="db-val text-orange font-bold" id="dbTotalRecords">6,457 notificaciones</span>
+              </div>
+              <div class="db-row">
+                <span class="db-label">Tiempo de parseo XML en memoria:</span>
+                <span class="db-val" id="dbParseTime">~360 ms</span>
+              </div>
+              <div class="db-row">
+                <span class="db-label">Última lectura:</span>
+                <span class="db-val" id="dbLastLoaded">En línea</span>
+              </div>
+            </div>
+            <div class="db-actions-row">
+              <button class="primary-btn" id="reloadXmlBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+                <span>Recargar Base de Datos XML</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Drag and Drop / Update XML Card -->
+          <div class="db-upload-card">
+            <div class="db-card-header">
+              <div class="db-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <div>
+                <h3>Cargar o Reemplazar XML</h3>
+                <p class="text-sm">¿Tienes una versión actualizada descargada de la Comisión Europea?</p>
+              </div>
+            </div>
+            <div class="drop-zone" id="xmlDropZone">
+              <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+              <h4>Arrastra y suelta tu archivo XML aquí</h4>
+              <p>o haz clic para examinar desde tu equipo</p>
+              <input type="file" id="xmlFileInput" accept=".xml" style="display:none;">
+            </div>
+            <div class="db-upload-note">
+              <span class="note-bullet">ℹ</span>
+              <span>El formato aceptado es el estándar de exportación de <strong>Safety Gate Motor Vehicles Weekly Report (XML)</strong> de la Unión Europea.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================== -->
+  <!-- MODAL: EXPEDIENTE COMPLETO DE CAMPAÑA DE RECALL -->
+  <!-- ========================================================== -->
+  <div class="modal-backdrop" id="recallModalBackdrop" style="display:none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-badge-group">
+          <span class="modal-badge brand" id="modalBrand">Marca</span>
+          <span class="modal-badge risk" id="modalRiskBadge">Riesgo</span>
+          <span class="modal-badge level" id="modalLevel">Serious risk</span>
+        </div>
+        <button class="modal-close-btn" id="modalCloseBtn" title="Cerrar ventana">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <h2 class="modal-title" id="modalProductTitle">Nombre del Producto / Modelo</h2>
+        <div class="modal-meta-bar">
+          <div class="meta-item">
+            <span class="meta-label">Nº de Caso Safety Gate:</span>
+            <span class="meta-val font-mono" id="modalCaseNumber">0014/11</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Fecha Publicación:</span>
+            <span class="meta-val" id="modalPubDate">14-01-2011</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Código Campaña Fabricante:</span>
+            <span class="meta-val font-mono" id="modalRecallCode">No especificado</span>
+          </div>
+        </div>
+
+        <!-- Failure & Danger Description -->
+        <div class="modal-section-card danger-card">
+          <div class="section-card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span>Defecto Técnico & Peligro para la Seguridad</span>
+          </div>
+          <p class="modal-danger-text" id="modalDangerText"></p>
+        </div>
+
+        <!-- Corrective Measures -->
+        <div class="modal-section-card measures-card">
+          <div class="section-card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            <span>Medidas Oficiales & Reparación Gratuita</span>
+          </div>
+          <p class="modal-measures-text" id="modalMeasuresText"></p>
+        </div>
+
+        <!-- Technical Model Specs & VIN range -->
+        <div class="modal-section-card technical-card">
+          <div class="section-card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h10"/></svg>
+            <span>Modelos Afectados, Homologaciones & Fechas de Producción</span>
+          </div>
+          <div class="technical-content" id="modalTechnicalContent"></div>
+        </div>
+
+        <!-- Geographic Data -->
+        <div class="modal-geo-row">
+          <div class="geo-item">
+            <span class="geo-label">País Notificante (UE):</span>
+            <span class="geo-val" id="modalNotifyingCountry">España</span>
+          </div>
+          <div class="geo-item">
+            <span class="geo-label">País de Origen de Fabricación:</span>
+            <span class="geo-val" id="modalOriginCountry">Alemania</span>
+          </div>
+          <div class="geo-item">
+            <span class="geo-label">Categoría de Componente:</span>
+            <span class="geo-val" id="modalComponents">Frenos / ABS</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <a href="#" target="_blank" rel="noopener noreferrer" class="modal-btn outline" id="modalOfficialLinkBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <span>Ver Alerta Oficial en Safety Gate UE</span>
+        </a>
+        <button class="modal-btn copy-btn" id="modalCopyBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <span>Copiar Referencia</span>
+        </button>
+        <button class="modal-btn print-btn" id="modalPrintBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+          <span>Imprimir Expediente</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- App JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>
