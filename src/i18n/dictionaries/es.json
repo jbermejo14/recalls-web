@@ -1,0 +1,85 @@
+{
+  "siteTitle": "Consultor de Campañas de Llamada a Revisión (Recalls)",
+  "siteTagline": "Base de datos oficial Safety Gate de la Unión Europea para vehículos a motor",
+  "searchPlaceholder": "Buscar por marca, modelo (ej: 3008, Golf, Clase C), código de recall o caso...",
+  "searchBtn": "Buscar",
+  "allMakes": "Todas las Marcas",
+  "allModels": "Todos los Modelos",
+  "allRisks": "Todos los Riesgos",
+  "campaignsCount": "{count} campañas de llamada a revisión",
+  "campaignsSingular": "1 campaña de llamada a revisión",
+  "officialSourceNotice": "Datos: Safety Gate, Comisión Europea",
+  "lastImportDate": "Última importación oficial: {date}",
+  "disclaimerText": "Aviso legal y metodológico: El número de campañas de llamada a revisión no mide la fiabilidad del vehículo ni tiene en cuenta el volumen de ventas o unidades en circulación de cada fabricante. Una campaña indica que el fabricante o las autoridades han tomado medidas preventivas o correctivas gratuitas para resolver un defecto de seguridad.",
+  "originalTextBadge": "Texto original de Safety Gate",
+  "originalNotice": "Las descripciones técnicas del peligro y las medidas se muestran en el idioma original en el que fueron registradas en el sistema oficial Safety Gate de la Comisión Europea.",
+  "viewOfficialAlert": "Ver alerta oficial en Safety Gate UE",
+  "sourceLicenseNotice": "Reutilización autorizada bajo la Decisión 2011/833/UE de la Comisión Europea sobre la reutilización de documentos de la Comisión.",
+  "breadcrumbs": {
+    "home": "Inicio",
+    "brands": "Marcas",
+    "models": "Modelos",
+    "campaigns": "Campañas"
+  },
+  "brandPage": {
+    "title": "Llamadas a revisión de {brand}",
+    "description": "Consulta todas las campañas oficiales de llamada a revisión y alertas de seguridad para vehículos {brand} según Safety Gate de la Unión Europea.",
+    "modelsHeader": "Modelos de {brand} con llamadas a revisión",
+    "allModelsTitle": "Modelos analizados",
+    "campaignsHeader": "Historial de campañas de {brand}",
+    "riskBreakdown": "Desglose por tipo de riesgo",
+    "yearBreakdown": "Desglose por año de publicación",
+    "lastCampaign": "Fecha de la última campaña: {date}",
+    "noModels": "No hay modelos individuales registrados de forma independiente para esta marca."
+  },
+  "modelPage": {
+    "title": "Llamadas a revisión del {brand} {model}",
+    "description": "Historial completo de alertas de seguridad y campañas de llamada a revisión que afectan al {brand} {model}. Información oficial Safety Gate de la UE.",
+    "heading": "Llamadas a revisión del {brand} {model}",
+    "subheading": "Campañas oficiales notificadas en la Unión Europea",
+    "riskBreakdown": "Riesgos identificados en este modelo",
+    "yearBreakdown": "Campañas por año",
+    "campaignListTitle": "Campañas que afectan al {brand} {model}"
+  },
+  "campaignPage": {
+    "title": "Campaña Safety Gate {caseNumber}: {brand} {models}",
+    "description": "Detalles oficiales de la llamada a revisión {caseNumber} para {brand}. Peligro reportado, medidas correctivas e información técnica de la UE.",
+    "caseNumber": "Número de caso oficial:",
+    "publicationDate": "Fecha de publicación:",
+    "notifyingCountry": "País notificante:",
+    "countryOfOrigin": "País de origen:",
+    "riskType": "Tipo de riesgo:",
+    "affectedModels": "Modelos y variantes afectadas:",
+    "dangerSection": "Defecto técnico y peligro para la seguridad",
+    "measuresSection": "Medidas oficiales adoptadas",
+    "typeApprovalSection": "Homologaciones y tipos de modelo",
+    "productionDatesSection": "Fechas de fabricación afectadas",
+    "freeRepairNotice": "En la Unión Europea, las llamadas a revisión por motivos de seguridad deben ser subsanadas gratuitamente por el fabricante o su red de concesionarios oficiales."
+  },
+  "home": {
+    "heroTitle": "Consultor de Campañas de Llamada a Revisión",
+    "heroSubtitle": "Comprueba los defectos de seguridad oficiales notificados ante la Comisión Europea para miles de vehículos y marcas.",
+    "topBrandsTitle": "Marcas con mayor historial de campañas registradas",
+    "latestRecallsTitle": "Últimas alertas de llamadas a revisión publicadas",
+    "browseByBrand": "Directorio completo de marcas de automoción",
+    "statsRecalls": "Campañas verificadas",
+    "statsBrands": "Marcas indexadas",
+    "statsModels": "Modelos catalogados",
+    "searchHeader": "Buscar en el archivo oficial de la UE"
+  },
+  "nav": {
+    "home": "Inicio",
+    "brands": "Marcas",
+    "safetyGate": "Safety Gate UE"
+  },
+  "risks": {
+    "Injuries": "Lesiones",
+    "Fire": "Incendio",
+    "Fire, Injuries": "Incendio y Lesiones",
+    "Environment": "Medio Ambiente",
+    "Burns": "Quemaduras",
+    "Chemical": "Químico",
+    "Burns, Fire": "Quemaduras e Incendio",
+    "Other": "Otros riesgos"
+  }
+}
