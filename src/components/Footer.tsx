@@ -82,7 +82,7 @@ export default function Footer({ lang }: { lang: Locale }) {
           {/* Col 3: Official Attribution & Legal */}
           <div>
             <div className="font-bold text-sm text-[var(--text-primary)] uppercase tracking-wider mb-3">
-              {lang === 'es' ? 'Fuente Oficial y Reutilización' : 'Official Source & Reuse'}
+              {lang === 'es' ? 'Fuente de los datos y reutilización' : 'Data Source & Reuse'}
             </div>
             <p className="text-xs text-[var(--text-muted)] mb-2">
               {formatText(dict.lastImportDate, { date: importDate })}

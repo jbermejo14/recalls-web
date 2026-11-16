@@ -76,8 +76,8 @@ export default async function HomePage({
 
           <p className="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
             {dict.siteTagline}. {lang === 'es'
-              ? 'Consulta las alertas oficiales publicadas por las autoridades de consumo de la Unión Europea para turismos, motocicletas, furgonetas y vehículos comerciales.'
-              : 'Search official alerts published by European Union consumer safety authorities for passenger cars, motorcycles, vans, and commercial vehicles.'}
+              ? 'Consulta las alertas publicadas por las autoridades de consumo de la Unión Europea para turismos, motocicletas, furgonetas y vehículos comerciales.'
+              : 'Search alerts published by European Union consumer safety authorities for passenger cars, motorcycles, vans, and commercial vehicles.'}
           </p>
 
           {/* Quick Metrics Cards */}
@@ -114,7 +114,7 @@ export default async function HomePage({
                 2005 - 2026
               </div>
               <div className="text-xs font-semibold text-[var(--text-muted)] mt-1">
-                {lang === 'es' ? 'Histórico Oficial' : 'Official Archive'}
+                {lang === 'es' ? 'Histórico de alertas' : 'Alert archive'}
               </div>
             </div>
           </div>
@@ -264,8 +264,8 @@ export default async function HomePage({
 
           <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
             {lang === 'es'
-              ? 'Safety Gate es el sistema de alerta rápida de la Comisión Europea para productos peligrosos no alimentarios. Si su vehículo está afectado por una llamada a revisión por motivos de seguridad, el fabricante está obligado por ley a realizar las reparaciones o sustituciones de componentes de forma gratuita en su red oficial de concesionarios.'
-              : 'Safety Gate is the European Commission rapid alert system for dangerous non-food products. If your vehicle is affected by an official safety recall, the manufacturer is legally required to carry out all necessary repairs or component replacements free of charge at their authorized service centers.'}
+              ? 'Safety Gate es el sistema de alerta rápida de la Comisión Europea para productos peligrosos no alimentarios. Si su vehículo está afectado por una llamada a revisión por motivos de seguridad, el fabricante está obligado por ley a realizar las reparaciones o sustituciones de componentes de forma gratuita en su red de concesionarios autorizados.'
+              : 'Safety Gate is the European Commission rapid alert system for dangerous non-food products. If your vehicle is affected by a safety recall, the manufacturer is legally required to carry out all necessary repairs or component replacements free of charge at their authorized service centers.'}
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold">

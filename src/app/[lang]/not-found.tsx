@@ -15,9 +15,9 @@ export default function NotFound() {
         </h2>
 
         <p className="text-sm text-[var(--text-muted)] mb-8 leading-relaxed">
-          La marca, modelo o campaña que estás buscando no existe o ha sido reclasificada en los datos oficiales de Safety Gate.
+          La marca, modelo o campaña que estás buscando no existe o ha sido reclasificada en los datos de Safety Gate.
           <br /><br />
-          The brand, model or campaign you are looking for does not exist or has been reclassified in official Safety Gate data.
+          The brand, model or campaign you are looking for does not exist or has been reclassified in Safety Gate data.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

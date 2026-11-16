@@ -1,6 +1,6 @@
 {
   "siteTitle": "Vehicle Recall Campaigns Consultant",
-  "siteTagline": "Official European Commission Safety Gate database for motor vehicles",
+  "siteTagline": "Motor vehicle alerts published in Safety Gate, the European Union alert system",
   "searchPlaceholder": "Search by make, model (e.g. 3008, Golf, C-Class), recall code or case number...",
   "searchBtn": "Search",
   "allMakes": "All Makes",
@@ -9,11 +9,11 @@
   "campaignsCount": "{count} safety recall campaigns",
   "campaignsSingular": "1 safety recall campaign",
   "officialSourceNotice": "Data: Safety Gate, European Commission",
-  "lastImportDate": "Last official import: {date}",
+  "lastImportDate": "Last import: {date}",
   "disclaimerText": "Legal and methodological notice: The number of safety recall campaigns does not measure vehicle reliability and does not reflect sales volume or total units in circulation for each manufacturer. A campaign indicates that the manufacturer or public authorities have initiated free corrective or preventative safety measures to resolve a defect.",
   "originalTextBadge": "Original Safety Gate text",
-  "originalNotice": "Technical descriptions of hazard and corrective measures are presented in their original language as recorded in the European Commission Safety Gate official system.",
-  "viewOfficialAlert": "View official alert on EU Safety Gate",
+  "originalNotice": "Technical descriptions of hazard and corrective measures are presented in their original language as recorded in the European Commission Safety Gate system.",
+  "viewOfficialAlert": "View original alert on EU Safety Gate",
   "sourceLicenseNotice": "Reuse authorized under European Commission Decision 2011/833/EU on the reuse of Commission documents.",
   "breadcrumbs": {
     "home": "Home",
@@ -23,7 +23,7 @@
   },
   "brandPage": {
     "title": "{brand} Recall Campaigns",
-    "description": "Browse all official vehicle safety recall campaigns and safety warnings for {brand} as recorded in the EU Safety Gate system.",
+    "description": "Browse all vehicle safety recall campaigns and safety warnings for {brand} as recorded in the EU Safety Gate system.",
     "modelsHeader": "{brand} models with recall campaigns",
     "allModelsTitle": "Analyzed models",
     "campaignsHeader": "Historical {brand} recall campaigns",
@@ -34,38 +34,38 @@
   },
   "modelPage": {
     "title": "{brand} {model} Recall Campaigns",
-    "description": "Complete safety recall history and critical notices affecting the {brand} {model}. Official EU Safety Gate information.",
+    "description": "Complete safety recall history and critical notices affecting the {brand} {model}. EU Safety Gate information.",
     "heading": "{brand} {model} Recall Campaigns",
-    "subheading": "Official safety recall notices published in the European Union",
+    "subheading": "Safety recall notices published in the European Union",
     "riskBreakdown": "Identified safety risks for this model",
     "yearBreakdown": "Campaigns by year",
     "campaignListTitle": "Recall campaigns affecting the {brand} {model}"
   },
   "campaignPage": {
     "title": "Safety Gate Recall {caseNumber}: {brand} {models}",
-    "description": "Official recall details for {caseNumber} affecting {brand}. Reported defect, manufacturer measures, and EU technical information.",
-    "caseNumber": "Official Case Number:",
+    "description": "Recall details for {caseNumber} affecting {brand}. Reported defect, manufacturer measures, and EU technical information.",
+    "caseNumber": "Safety Gate Case Number:",
     "publicationDate": "Publication Date:",
     "notifyingCountry": "Notifying Country:",
     "countryOfOrigin": "Country of Origin:",
     "riskType": "Risk Type:",
     "affectedModels": "Affected models & variants:",
     "dangerSection": "Technical Defect & Safety Hazard",
-    "measuresSection": "Official Measures Adopted",
+    "measuresSection": "Measures Adopted",
     "typeApprovalSection": "Type-Approvals and Model Codes",
     "productionDatesSection": "Affected Production Dates",
     "freeRepairNotice": "Within the European Union, safety recall campaigns must be corrected free of charge by the vehicle manufacturer or its authorized dealer network."
   },
   "home": {
     "heroTitle": "Vehicle Recall Campaigns Consultant",
-    "heroSubtitle": "Check official motor vehicle safety defects and recall campaigns notified to the European Commission for thousands of vehicles and makes.",
+    "heroSubtitle": "Check motor vehicle safety defects and recall campaigns notified to the European Commission for thousands of vehicles and makes.",
     "topBrandsTitle": "Makes with most registered recall campaigns",
     "latestRecallsTitle": "Latest published safety recall alerts",
     "browseByBrand": "Complete directory of automotive makes",
     "statsRecalls": "Verified campaigns",
     "statsBrands": "Indexed makes",
     "statsModels": "Cataloged models",
-    "searchHeader": "Search the official European archive"
+    "searchHeader": "Search Safety Gate alerts"
   },
   "nav": {
     "home": "Home",

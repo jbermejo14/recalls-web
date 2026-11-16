@@ -242,7 +242,7 @@ export default async function CampaignPage({
             </div>
 
             <div className="p-4 rounded-xl bg-[var(--bg-page)] border border-[var(--border-color)] text-xs sm:text-sm text-[var(--text-primary)] leading-relaxed font-sans whitespace-pre-wrap">
-              {recall.danger || (lang === 'es' ? 'No disponible en el registro oficial.' : 'Not available in official record.')}
+              {recall.danger || (lang === 'es' ? 'No disponible en el registro de Safety Gate.' : 'Not available in the Safety Gate record.')}
             </div>
           </div>
 

@@ -1,14 +1,6 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
-};
+// Tailwind se integra vía postcss.config.mjs, tanto con webpack como con Turbopack.
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
