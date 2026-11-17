@@ -1,69 +1,53 @@
 import type { MetadataRoute } from 'next';
 import { getSafetyGateDataset } from '../lib/safety-gate-service';
-import { getSiteUrl, buildCanonicalUrl, buildHreflangAlternates } from '../lib/seo';
-import { locales } from '../i18n/config';
+import { absoluteUrl, alternateUrls } from '../lib/site';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export const dynamic = 'force-static';
+
+const HOME_PRIORITY = 1.0;
+const BRAND_PRIORITY = 0.8;
+const MODEL_PRIORITY = 0.7;
+const RECALL_PRIORITY = 0.6;
+
+function sitemapEntry(
+  path: string,
+  lastModified: Date,
+  changeFrequency: 'weekly' | 'monthly' | 'yearly',
+  priority: number
+): MetadataRoute.Sitemap[number] {
+  return {
+    url: absoluteUrl(path),
+    lastModified,
+    changeFrequency,
+    priority,
+    alternates: { languages: alternateUrls(path) }
+  };
+}
+
+function sitemapDateOrFallback(date: string | undefined, fallback: Date): Date {
+  return date ? new Date(date) : fallback;
+}
+
+/** Mapa del sitio con solo las URLs del idioma de esta compilación; el otro idioma lo publica su propio Worker. */
+export default function sitemap(): MetadataRoute.Sitemap {
   const dataset = getSafetyGateDataset();
-  const siteUrl = getSiteUrl();
-  const entries: MetadataRoute.Sitemap = [];
+  const importedAt = new Date(dataset.importedAt);
+  const entries: MetadataRoute.Sitemap = [sitemapEntry('/', importedAt, 'weekly', HOME_PRIORITY)];
 
-  // Home pages
-  for (const locale of locales) {
-    entries.push({
-      url: `${siteUrl}/${locale}`,
-      lastModified: new Date(dataset.importedAt),
-      changeFrequency: 'weekly',
-      priority: 1.0,
-      alternates: {
-        languages: buildHreflangAlternates('/')
-      }
-    });
-  }
-
-  // Brand pages
   for (const brand of dataset.brands) {
-    for (const locale of locales) {
-      entries.push({
-        url: buildCanonicalUrl(`/marca/${brand.brandSlug}`, locale),
-        lastModified: brand.lastRecallDate ? new Date(brand.lastRecallDate) : new Date(dataset.importedAt),
-        changeFrequency: 'monthly',
-        priority: 0.8,
-        alternates: {
-          languages: buildHreflangAlternates(`/marca/${brand.brandSlug}`)
-        }
-      });
-    }
-
-    // Model pages
+    const brandPath = `/marca/${brand.brandSlug}`;
+    entries.push(sitemapEntry(brandPath, sitemapDateOrFallback(brand.lastRecallDate, importedAt), 'monthly', BRAND_PRIORITY));
     for (const model of brand.models) {
-      for (const locale of locales) {
-        entries.push({
-          url: buildCanonicalUrl(`/marca/${brand.brandSlug}/${model.slug}`, locale),
-          lastModified: model.lastRecallDate ? new Date(model.lastRecallDate) : new Date(dataset.importedAt),
-          changeFrequency: 'monthly',
-          priority: 0.7,
-          alternates: {
-            languages: buildHreflangAlternates(`/marca/${brand.brandSlug}/${model.slug}`)
-          }
-        });
-      }
+      entries.push(
+        sitemapEntry(`${brandPath}/${model.slug}`, sitemapDateOrFallback(model.lastRecallDate, importedAt), 'monthly', MODEL_PRIORITY)
+      );
     }
   }
 
-  // Campaign pages
   for (const recall of dataset.recalls) {
-    for (const locale of locales) {
-      entries.push({
-        url: buildCanonicalUrl(`/campana/${recall.slug}`, locale),
-        lastModified: recall.publicationDate ? new Date(recall.publicationDate) : new Date(dataset.importedAt),
-        changeFrequency: 'yearly',
-        priority: 0.6,
-        alternates: {
-          languages: buildHreflangAlternates(`/campana/${recall.slug}`)
-        }
-      });
-    }
+    entries.push(
+      sitemapEntry(`/campana/${recall.slug}`, sitemapDateOrFallback(recall.publicationDate, importedAt), 'yearly', RECALL_PRIORITY)
+    );
   }
 
   return entries;

@@ -1,61 +1,35 @@
 import type { Metadata } from 'next';
-import { locales, defaultLocale, type Locale } from '../i18n/config';
+import { SITE_NAME, absoluteUrl, alternateUrls, getLocale } from './site';
 
-export function getSiteUrl(): string {
-  const url = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3050';
-  return url.replace(/\/+$/, '');
-}
+const OPEN_GRAPH_LOCALES = { es: 'es_ES', en: 'en_US' } as const;
 
-export function buildCanonicalUrl(path: string, locale: Locale): string {
-  const base = getSiteUrl();
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${base}/${locale}${cleanPath === '/' ? '' : cleanPath}`;
-}
-
-export function buildHreflangAlternates(path: string): Record<string, string> {
-  const base = getSiteUrl();
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  const pathPart = cleanPath === '/' ? '' : cleanPath;
-
-  const languages: Record<string, string> = {};
-  for (const loc of locales) {
-    languages[loc] = `${base}/${loc}${pathPart}`;
-  }
-  // x-default points to defaultLocale (es)
-  languages['x-default'] = `${base}/${defaultLocale}${pathPart}`;
-
-  return languages;
-}
-
+/** Metadatos de una página: canonical, hreflang, Open Graph y Twitter, en el idioma de la compilación. */
 export function buildPageMetadata({
-  locale,
   path,
   title,
   description,
   ogType = 'website'
 }: {
-  locale: Locale;
   path: string;
   title: string;
   description: string;
   ogType?: 'website' | 'article';
 }): Metadata {
-  const canonical = buildCanonicalUrl(path, locale);
-  const alternates = buildHreflangAlternates(path);
+  const canonical = absoluteUrl(path);
 
   return {
     title,
     description,
     alternates: {
       canonical,
-      languages: alternates
+      languages: alternateUrls(path)
     },
     openGraph: {
       title,
       description,
       url: canonical,
-      siteName: 'RECALLSCOPE | Safety Gate UE',
-      locale: locale === 'es' ? 'es_ES' : 'en_US',
+      siteName: SITE_NAME,
+      locale: OPEN_GRAPH_LOCALES[getLocale()],
       type: ogType
     },
     twitter: {
@@ -68,6 +42,7 @@ export function buildPageMetadata({
 
 export interface BreadcrumbItem {
   name: string;
+  /** URL absoluta de la miga. */
   item: string;
 }
 

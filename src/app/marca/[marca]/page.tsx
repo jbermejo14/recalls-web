@@ -1,24 +1,22 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import InternalLink from '../../../components/InternalLink';
 import { notFound } from 'next/navigation';
 import { ShieldAlert, Car, Calendar, ArrowRight, ArrowLeft, ExternalLink, Activity, AlertTriangle, Layers } from 'lucide-react';
-import { locales, isSupportedLocale, type Locale } from '../../../../i18n/config';
-import { getDictionary, formatText } from '../../../../i18n/get-dictionary';
-import { getAllBrands, getBrandBySlug } from '../../../../lib/safety-gate-service';
-import { buildPageMetadata } from '../../../../lib/seo';
-import Breadcrumbs from '../../../../components/Breadcrumbs';
-import DisclaimerBanner from '../../../../components/DisclaimerBanner';
-import RiskBadge from '../../../../components/RiskBadge';
+import { getLocale } from '../../../lib/site';
+import { getDictionary, formatText } from '../../../i18n/get-dictionary';
+import { getAllBrands, getBrandBySlug } from '../../../lib/safety-gate-service';
+import { buildPageMetadata } from '../../../lib/seo';
+import Breadcrumbs from '../../../components/Breadcrumbs';
+import DisclaimerBanner from '../../../components/DisclaimerBanner';
+import RiskBadge from '../../../components/RiskBadge';
 
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const brands = getAllBrands();
-  const params: { lang: string; marca: string }[] = [];
-  for (const lang of locales) {
-    for (const b of brands) {
-      params.push({ lang, marca: b.brandSlug });
-    }
+  const params: { marca: string }[] = [];
+  for (const b of brands) {
+    params.push({ marca: b.brandSlug });
   }
   return params;
 }
@@ -26,24 +24,22 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params
 }: {
-  params: Promise<{ lang: string; marca: string }>;
+  params: Promise<{ marca: string }>;
 }): Promise<Metadata> {
-  const { lang, marca } = await params;
-  if (!isSupportedLocale(lang)) return {};
+  const { marca } = await params;
 
   const brandData = getBrandBySlug(marca);
   if (!brandData) return {};
 
-  const dict = getDictionary(lang as Locale);
+  const dict = getDictionary(getLocale());
   const brandName = brandData.brand.brand;
 
-  const title = `${formatText(dict.brandPage.title, { brand: brandName })} | Safety Gate UE`;
+  const title = `${formatText(dict.brandPage.title, { brand: brandName })}`;
   const description = formatText(dict.brandPage.description, {
     brand: brandName
   });
 
   return buildPageMetadata({
-    locale: lang as Locale,
     path: `/marca/${marca}`,
     title,
     description
@@ -53,26 +49,23 @@ export async function generateMetadata({
 export default async function BrandPage({
   params
 }: {
-  params: Promise<{ lang: string; marca: string }>;
+  params: Promise<{ marca: string }>;
 }) {
-  const { lang, marca } = await params;
-  if (!isSupportedLocale(lang)) {
-    notFound();
-  }
+  const { marca } = await params;
 
   const brandData = getBrandBySlug(marca);
   if (!brandData) {
     notFound();
   }
 
-  const locale = lang as Locale;
+  const locale = getLocale();
   const dict = getDictionary(locale);
   const { brand, recalls } = brandData;
 
   const breadcrumbs = [
-    { name: dict.breadcrumbs.home, url: `/${locale}` },
-    { name: dict.breadcrumbs.brands, url: `/${locale}#marcas` },
-    { name: brand.brand, url: `/${locale}/marca/${brand.brandSlug}` }
+    { name: dict.breadcrumbs.home, url: '/' },
+    { name: dict.breadcrumbs.brands, url: '/#marcas' },
+    { name: brand.brand, url: `/marca/${brand.brandSlug}` }
   ];
 
   // Sort risks by count descending
@@ -83,7 +76,7 @@ export default async function BrandPage({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
-      <Breadcrumbs lang={locale} items={breadcrumbs} />
+      <Breadcrumbs items={breadcrumbs} />
 
       {/* Brand Header */}
       <section className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 space-y-6">
@@ -145,7 +138,7 @@ export default async function BrandPage({
             <span>{dict.brandPage.riskBreakdown}</span>
           </h2>
           <p className="text-xs text-[var(--text-muted)]">
-            {lang === 'es'
+            {locale === 'es'
               ? 'Distribución de alertas según la categoría de riesgo notificada por las autoridades europeas.'
               : 'Distribution of recall alerts by danger classification reported by European authorities.'}
           </p>
@@ -184,7 +177,7 @@ export default async function BrandPage({
             <span>{dict.brandPage.yearBreakdown}</span>
           </h2>
           <p className="text-xs text-[var(--text-muted)]">
-            {lang === 'es'
+            {locale === 'es'
               ? 'Número de campañas publicadas en el sistema europeo Safety Gate por año.'
               : 'Number of recall campaigns published on European Safety Gate per year.'}
           </p>
@@ -217,9 +210,9 @@ export default async function BrandPage({
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
           {brand.models.map(m => (
-            <Link
+            <InternalLink
               key={m.slug}
-              href={`/${locale}/marca/${brand.brandSlug}/${m.slug}`}
+              href={`/marca/${brand.brandSlug}/${m.slug}`}
               className="group p-4 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500]/50 transition-all flex flex-col justify-between"
             >
               <div>
@@ -234,7 +227,7 @@ export default async function BrandPage({
                 <span>{dict.breadcrumbs.campaigns}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
-            </Link>
+            </InternalLink>
           ))}
         </div>
       </section>
@@ -250,9 +243,9 @@ export default async function BrandPage({
 
         <div className="space-y-3">
           {recalls.map(r => (
-            <Link
+            <InternalLink
               key={r.slug}
-              href={`/${locale}/campana/${r.slug}`}
+              href={`/campana/${r.slug}`}
               className="group block p-5 rounded-2xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500]/50 transition-all shadow-sm"
             >
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
@@ -296,7 +289,7 @@ export default async function BrandPage({
                   </span>
                 </div>
               </div>
-            </Link>
+            </InternalLink>
           ))}
         </div>
       </section>

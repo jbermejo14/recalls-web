@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ShieldCheck, ExternalLink, AlertTriangle } from 'lucide-react';
-import type { Locale } from '../i18n/config';
+import type { Locale } from '../lib/site';
 import { getDictionary, formatText } from '../i18n/get-dictionary';
 import { getSafetyGateDataset } from '../lib/safety-gate-service';
 
@@ -56,12 +56,12 @@ export default function Footer({ lang }: { lang: Locale }) {
             </div>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href={`/${lang}`} className="hover:text-[#FF5500] transition-colors">
+                <Link href="/" className="hover:text-[#FF5500] transition-colors">
                   {dict.nav.home}
                 </Link>
               </li>
               <li>
-                <Link href={`/${lang}#marcas`} className="hover:text-[#FF5500] transition-colors">
+                <Link href="/#marcas" className="hover:text-[#FF5500] transition-colors">
                   {dict.nav.brands}
                 </Link>
               </li>

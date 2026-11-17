@@ -1,50 +1,33 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import InternalLink from '../components/InternalLink';
 import { ShieldAlert, Car, Calendar, ExternalLink, ArrowRight, ShieldCheck, Database, Layers } from 'lucide-react';
-import { isSupportedLocale, type Locale } from '../../i18n/config';
-import { getDictionary, formatText } from '../../i18n/get-dictionary';
-import { getSafetyGateDataset, getTopBrands, getLatestRecalls } from '../../lib/safety-gate-service';
-import { buildPageMetadata, generateBreadcrumbSchema } from '../../lib/seo';
-import SearchClient from '../../components/SearchClient';
-import DisclaimerBanner from '../../components/DisclaimerBanner';
-import RiskBadge from '../../components/RiskBadge';
+import { SITE_NAME, absoluteUrl, getLocale } from '../lib/site';
+import { getDictionary, formatText } from '../i18n/get-dictionary';
+import { getSafetyGateDataset, getTopBrands, getLatestRecalls } from '../lib/safety-gate-service';
+import { buildPageMetadata, generateBreadcrumbSchema } from '../lib/seo';
+import SearchClient from '../components/SearchClient';
+import DisclaimerBanner from '../components/DisclaimerBanner';
+import RiskBadge from '../components/RiskBadge';
 
-export async function generateMetadata({
-  params
-}: {
-  params: Promise<{ lang: string }>;
-}): Promise<Metadata> {
-  const { lang } = await params;
-  if (!isSupportedLocale(lang)) return {};
-
-  const dict = getDictionary(lang as Locale);
+export function generateMetadata(): Metadata {
+  const dict = getDictionary(getLocale());
   return buildPageMetadata({
-    locale: lang as Locale,
     path: '/',
-    title: `${dict.siteTitle} | Safety Gate UE`,
+    // La plantilla del layout no se aplica a la página de su mismo segmento: el nombre se añade a mano.
+    title: `${dict.siteTitle} | ${SITE_NAME}`,
     description: dict.siteTagline
   });
 }
 
-export default async function HomePage({
-  params
-}: {
-  params: Promise<{ lang: string }>;
-}) {
-  const { lang } = await params;
-  if (!isSupportedLocale(lang)) {
-    notFound();
-  }
-
-  const locale = lang as Locale;
+export default function HomePage() {
+  const locale = getLocale();
   const dict = getDictionary(locale);
   const dataset = getSafetyGateDataset();
   const topBrands = getTopBrands(36);
   const latestRecalls = getLatestRecalls(24);
 
   const breadcrumbsJsonLd = generateBreadcrumbSchema([
-    { name: dict.breadcrumbs.home, item: `/${locale}` }
+    { name: dict.breadcrumbs.home, item: absoluteUrl('/') }
   ]);
 
   return (
@@ -63,7 +46,7 @@ export default async function HomePage({
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[var(--text-primary)] tracking-tight leading-tight max-w-4xl mx-auto">
-            {lang === 'es' ? (
+            {locale === 'es' ? (
               <>
                 Consultor de <span className="text-[#FF5500]">Llamadas a Revisión</span> y Alertas de Vehículos
               </>
@@ -75,7 +58,7 @@ export default async function HomePage({
           </h1>
 
           <p className="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
-            {dict.siteTagline}. {lang === 'es'
+            {dict.siteTagline}. {locale === 'es'
               ? 'Consulta las alertas publicadas por las autoridades de consumo de la Unión Europea para turismos, motocicletas, furgonetas y vehículos comerciales.'
               : 'Search alerts published by European Union consumer safety authorities for passenger cars, motorcycles, vans, and commercial vehicles.'}
           </p>
@@ -114,7 +97,7 @@ export default async function HomePage({
                 2005 - 2026
               </div>
               <div className="text-xs font-semibold text-[var(--text-muted)] mt-1">
-                {lang === 'es' ? 'Histórico de alertas' : 'Alert archive'}
+                {locale === 'es' ? 'Histórico de alertas' : 'Alert archive'}
               </div>
             </div>
           </div>
@@ -131,7 +114,7 @@ export default async function HomePage({
               <span>{dict.home.searchHeader}</span>
             </h2>
             <span className="text-xs text-[var(--text-muted)]">
-              {lang === 'es' ? 'Búsqueda en tiempo real' : 'Real-time search'}
+              {locale === 'es' ? 'Búsqueda en tiempo real' : 'Real-time search'}
             </span>
           </div>
 
@@ -161,9 +144,9 @@ export default async function HomePage({
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
             {topBrands.map(b => (
-              <Link
+              <InternalLink
                 key={b.brandSlug}
-                href={`/${locale}/marca/${b.brandSlug}`}
+                href={`/marca/${b.brandSlug}`}
                 className="group p-4 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500]/50 transition-all shadow-sm hover:shadow-md flex flex-col justify-between"
               >
                 <div>
@@ -180,7 +163,7 @@ export default async function HomePage({
                   </span>
                   <ArrowRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:translate-x-1 group-hover:text-[#FF5500] transition-transform" />
                 </div>
-              </Link>
+              </InternalLink>
             ))}
           </div>
         </section>
@@ -194,7 +177,7 @@ export default async function HomePage({
                 <span>{dict.home.latestRecallsTitle}</span>
               </h2>
               <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1">
-                {lang === 'es'
+                {locale === 'es'
                   ? 'Últimas notificaciones notificadas a través de la red europea Safety Gate.'
                   : 'Latest notifications reported through the European Safety Gate network.'}
               </p>
@@ -203,9 +186,9 @@ export default async function HomePage({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {latestRecalls.slice(0, 12).map(r => (
-              <Link
+              <InternalLink
                 key={r.slug}
-                href={`/${locale}/campana/${r.slug}`}
+                href={`/campana/${r.slug}`}
                 className="group p-5 rounded-2xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500]/50 transition-all shadow-sm flex flex-col justify-between space-y-3"
               >
                 <div className="space-y-2">
@@ -241,7 +224,7 @@ export default async function HomePage({
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
-              </Link>
+              </InternalLink>
             ))}
           </div>
         </section>
@@ -263,7 +246,7 @@ export default async function HomePage({
           </div>
 
           <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-            {lang === 'es'
+            {locale === 'es'
               ? 'Safety Gate es el sistema de alerta rápida de la Comisión Europea para productos peligrosos no alimentarios. Si su vehículo está afectado por una llamada a revisión por motivos de seguridad, el fabricante está obligado por ley a realizar las reparaciones o sustituciones de componentes de forma gratuita en su red de concesionarios autorizados.'
               : 'Safety Gate is the European Commission rapid alert system for dangerous non-food products. If your vehicle is affected by a safety recall, the manufacturer is legally required to carry out all necessary repairs or component replacements free of charge at their authorized service centers.'}
           </p>

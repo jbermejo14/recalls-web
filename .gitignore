@@ -6,6 +6,7 @@ node_modules/
 # Next.js build output
 .next/
 out/
+out-*/
 build/
 dist/
 
@@ -35,3 +36,6 @@ Thumbs.db
 
 # Datos personales del titular (ver config/titular.example.json)
 /config/titular.json
+
+# Caché incremental de tsc
+*.tsbuildinfo

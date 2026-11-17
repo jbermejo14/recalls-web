@@ -1,18 +1,16 @@
-import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import type { Locale } from '../i18n/config';
+import InternalLink from './InternalLink';
+import { absoluteUrl } from '../lib/site';
 import { generateBreadcrumbSchema, type BreadcrumbItem } from '../lib/seo';
 
 export default function Breadcrumbs({
-  lang,
   items
 }: {
-  lang: Locale;
   items: Array<{ name: string; url: string }>;
 }) {
   const schemaItems: BreadcrumbItem[] = items.map(item => ({
     name: item.name,
-    item: item.url
+    item: absoluteUrl(item.url)
   }));
 
   const jsonLd = generateBreadcrumbSchema(schemaItems);
@@ -32,9 +30,9 @@ export default function Breadcrumbs({
               {isLast ? (
                 <span className="font-semibold text-[var(--text-primary)]">{crumb.name}</span>
               ) : (
-                <Link href={crumb.url} className="hover:text-[#FF5500] transition-colors">
+                <InternalLink href={crumb.url} className="hover:text-[#FF5500] transition-colors">
                   {crumb.name}
-                </Link>
+                </InternalLink>
               )}
             </div>
           );

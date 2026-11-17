@@ -1,24 +1,22 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import InternalLink from '../../../components/InternalLink';
 import { notFound } from 'next/navigation';
 import { ShieldAlert, Car, Calendar, ExternalLink, ArrowLeft, Globe, Wrench, AlertTriangle, ShieldCheck, FileText, CheckCircle2 } from 'lucide-react';
-import { locales, isSupportedLocale, type Locale } from '../../../../i18n/config';
-import { getDictionary, formatText } from '../../../../i18n/get-dictionary';
-import { getSafetyGateDataset, getRecallBySlug, getBrandBySlug } from '../../../../lib/safety-gate-service';
-import { buildPageMetadata } from '../../../../lib/seo';
-import Breadcrumbs from '../../../../components/Breadcrumbs';
-import DisclaimerBanner from '../../../../components/DisclaimerBanner';
-import RiskBadge from '../../../../components/RiskBadge';
+import { getLocale } from '../../../lib/site';
+import { getDictionary, formatText } from '../../../i18n/get-dictionary';
+import { getSafetyGateDataset, getRecallBySlug, getBrandBySlug } from '../../../lib/safety-gate-service';
+import { buildPageMetadata } from '../../../lib/seo';
+import Breadcrumbs from '../../../components/Breadcrumbs';
+import DisclaimerBanner from '../../../components/DisclaimerBanner';
+import RiskBadge from '../../../components/RiskBadge';
 
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const dataset = getSafetyGateDataset();
-  const params: { lang: string; slug: string }[] = [];
-  for (const lang of locales) {
-    for (const r of dataset.recalls) {
-      params.push({ lang, slug: r.slug });
-    }
+  const params: { slug: string }[] = [];
+  for (const r of dataset.recalls) {
+    params.push({ slug: r.slug });
   }
   return params;
 }
@@ -26,15 +24,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params
 }: {
-  params: Promise<{ lang: string; slug: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { lang, slug } = await params;
-  if (!isSupportedLocale(lang)) return {};
+  const { slug } = await params;
 
   const recall = getRecallBySlug(slug);
   if (!recall) return {};
 
-  const dict = getDictionary(lang as Locale);
+  const dict = getDictionary(getLocale());
   const primaryModel = recall.models[0] || '';
   const brandAndModel = primaryModel ? `${recall.brand} ${primaryModel}` : recall.brand;
 
@@ -42,12 +39,11 @@ export async function generateMetadata({
     caseNumber: recall.caseNumber,
     brand: recall.brand,
     models: recall.models.join(', ') || ''
-  })} | Safety Gate UE`;
+  })}`;
 
   const description = `${recall.brand} (${recall.caseNumber}): ${recall.riskType}. ${recall.danger.slice(0, 140)}...`;
 
   return buildPageMetadata({
-    locale: lang as Locale,
     path: `/campana/${slug}`,
     title,
     description,
@@ -58,44 +54,41 @@ export async function generateMetadata({
 export default async function CampaignPage({
   params
 }: {
-  params: Promise<{ lang: string; slug: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { lang, slug } = await params;
-  if (!isSupportedLocale(lang)) {
-    notFound();
-  }
+  const { slug } = await params;
 
   const recall = getRecallBySlug(slug);
   if (!recall) {
     notFound();
   }
 
-  const locale = lang as Locale;
+  const locale = getLocale();
   const dict = getDictionary(locale);
 
   const primaryModel = recall.models[0] || null;
   const primaryModelSlug = recall.modelSlugs[0] || null;
 
   const breadcrumbs = [
-    { name: dict.breadcrumbs.home, url: `/${locale}` },
-    { name: recall.brand, url: `/${locale}/marca/${recall.brandSlug}` }
+    { name: dict.breadcrumbs.home, url: '/' },
+    { name: recall.brand, url: `/marca/${recall.brandSlug}` }
   ];
 
   if (primaryModel && primaryModelSlug) {
     breadcrumbs.push({
       name: primaryModel,
-      url: `/${locale}/marca/${recall.brandSlug}/${primaryModelSlug}`
+      url: `/marca/${recall.brandSlug}/${primaryModelSlug}`
     });
   }
 
   breadcrumbs.push({
     name: recall.caseNumber,
-    url: `/${locale}/campana/${recall.slug}`
+    url: `/campana/${recall.slug}`
   });
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
-      <Breadcrumbs lang={locale} items={breadcrumbs} />
+      <Breadcrumbs items={breadcrumbs} />
 
       {/* Campaign Header Box */}
       <section className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 space-y-6">
@@ -154,14 +147,14 @@ export default async function CampaignPage({
                   );
                 }
                 return (
-                  <Link
+                  <InternalLink
                     key={modName}
-                    href={`/${locale}/marca/${recall.brandSlug}/${mSlug}`}
+                    href={`/marca/${recall.brandSlug}/${mSlug}`}
                     className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[var(--bg-page)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500]/40 text-xs font-semibold text-[var(--text-primary)] hover:text-[#FF5500] transition-colors"
                   >
                     <Car className="w-3.5 h-3.5 text-[#FF5500]" />
                     <span>{modName}</span>
-                  </Link>
+                  </InternalLink>
                 );
               })}
             </div>
@@ -185,9 +178,9 @@ export default async function CampaignPage({
             <div>
               <dt className="text-[var(--text-muted)] font-semibold">{dict.breadcrumbs.brands}:</dt>
               <dd className="font-bold text-[var(--text-primary)] mt-0.5">
-                <Link href={`/${locale}/marca/${recall.brandSlug}`} className="text-[#FF5500] hover:underline">
+                <InternalLink href={`/marca/${recall.brandSlug}`} className="text-[#FF5500] hover:underline">
                   {recall.brand}
-                </Link>
+                </InternalLink>
               </dd>
             </div>
 
@@ -242,7 +235,7 @@ export default async function CampaignPage({
             </div>
 
             <div className="p-4 rounded-xl bg-[var(--bg-page)] border border-[var(--border-color)] text-xs sm:text-sm text-[var(--text-primary)] leading-relaxed font-sans whitespace-pre-wrap">
-              {recall.danger || (lang === 'es' ? 'No disponible en el registro de Safety Gate.' : 'Not available in the Safety Gate record.')}
+              {recall.danger || (locale === 'es' ? 'No disponible en el registro de Safety Gate.' : 'Not available in the Safety Gate record.')}
             </div>
           </div>
 
@@ -259,7 +252,7 @@ export default async function CampaignPage({
             </div>
 
             <div className="p-4 rounded-xl bg-[var(--bg-page)] border border-[var(--border-color)] text-xs sm:text-sm text-[var(--text-primary)] leading-relaxed font-sans whitespace-pre-wrap">
-              {recall.measures || (lang === 'es' ? 'No constan medidas adicionales.' : 'No additional measures specified.')}
+              {recall.measures || (locale === 'es' ? 'No constan medidas adicionales.' : 'No additional measures specified.')}
             </div>
           </div>
         </div>
@@ -272,7 +265,7 @@ export default async function CampaignPage({
             <CheckCircle2 className="w-5 h-5" />
           </div>
           <h3 className="font-bold text-sm text-[var(--text-primary)]">
-            {lang === 'es' ? 'Garantía legal europea de reparación gratuita' : 'European Legal Guarantee of Free Repair'}
+            {locale === 'es' ? 'Garantía legal europea de reparación gratuita' : 'European Legal Guarantee of Free Repair'}
           </h3>
         </div>
         <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
@@ -282,15 +275,15 @@ export default async function CampaignPage({
 
       {/* Bottom Navigation */}
       <div className="flex items-center justify-between pt-4">
-        <Link
-          href={`/${locale}/marca/${recall.brandSlug}`}
+        <InternalLink
+          href={`/marca/${recall.brandSlug}`}
           className="inline-flex items-center gap-2 text-sm font-semibold text-[#FF5500] hover:underline"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>
-            {lang === 'es' ? `Volver a ${recall.brand}` : `Back to ${recall.brand}`}
+            {locale === 'es' ? `Volver a ${recall.brand}` : `Back to ${recall.brand}`}
           </span>
-        </Link>
+        </InternalLink>
 
         {recall.officialUrl && (
           <a

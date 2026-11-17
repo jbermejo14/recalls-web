@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack --port 3050",
-    "build": "next build --webpack",
-    "start": "next start --port 3050",
+    "build": "npm run build:es && npm run build:en",
+    "build:es": "node scripts/build-locale.mjs es",
+    "build:en": "node scripts/build-locale.mjs en",
     "import": "tsx scripts/import-safety-gate.ts",
     "test": "tsx --test tests/**/*.test.ts"
   },

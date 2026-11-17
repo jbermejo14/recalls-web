@@ -1,5 +1,5 @@
 import { Flame, AlertTriangle, Leaf, Zap, HelpCircle } from 'lucide-react';
-import type { Locale } from '../i18n/config';
+import type { Locale } from '../lib/site';
 import { getDictionary } from '../i18n/get-dictionary';
 
 export default function RiskBadge({

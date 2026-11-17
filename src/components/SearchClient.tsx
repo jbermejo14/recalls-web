@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Link from 'next/link';
+import InternalLink from './InternalLink';
 import { Search, X, Flame, ShieldAlert, ArrowRight, Car } from 'lucide-react';
-import type { Locale } from '../i18n/config';
+import type { Locale } from '../lib/site';
 import type { SafetyGateRecall, BrandSummary } from '../types/safety-gate';
 import RiskBadge from './RiskBadge';
 
@@ -137,15 +137,15 @@ export default function SearchClient({
           </div>
           <div className="flex flex-wrap gap-2">
             {filteredBrands.map(b => (
-              <Link
+              <InternalLink
                 key={b.brandSlug}
-                href={`/${lang}/marca/${b.brandSlug}`}
+                href={`/marca/${b.brandSlug}`}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500] text-xs font-bold text-[var(--text-primary)] transition-all group"
               >
                 <span>{b.brand}</span>
                 <span className="text-[10px] text-[var(--text-muted)]">({b.totalRecalls})</span>
                 <ArrowRight className="w-3 h-3 text-[#FF5500] group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+              </InternalLink>
             ))}
           </div>
         </div>
@@ -173,9 +173,9 @@ export default function SearchClient({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredRecalls.map(r => (
-              <Link
+              <InternalLink
                 key={r.caseNumber}
-                href={`/${lang}/campana/${r.slug}`}
+                href={`/campana/${r.slug}`}
                 className="group p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] hover:border-[#FF5500] hover:shadow-lg hover:shadow-[#FF5500]/10 transition-all flex flex-col justify-between"
               >
                 <div>
@@ -203,7 +203,7 @@ export default function SearchClient({
                     {r.caseNumber}
                   </span>
                 </div>
-              </Link>
+              </InternalLink>
             ))}
           </div>
         )}

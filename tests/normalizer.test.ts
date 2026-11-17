@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import path from 'path';
 import { normalizeBrand, extractModels, slugify, caseNumberToSlug } from '../src/lib/normalizer';
 import { importSafetyGate } from '../scripts/import-safety-gate';
-import { buildCanonicalUrl, buildHreflangAlternates, generateBreadcrumbSchema } from '../src/lib/seo';
+import { generateBreadcrumbSchema } from '../src/lib/seo';
+import { absoluteUrl, alternateUrls } from '../src/lib/site';
 import { getBrandBySlug, getModelBySlugs, getRecallBySlug } from '../src/lib/safety-gate-service';
 import sitemap from '../src/app/sitemap';
 
@@ -108,17 +109,17 @@ describe('Offline XML Fixture Import & Structural Integrity Tests', () => {
 
   test('hreflang alternates and canonical SEO URLs include reciprocal links and x-default', () => {
     const path = '/marca/seat';
-    const alternates = buildHreflangAlternates(path);
+    const alternates = alternateUrls(path);
 
     assert.ok(alternates['es']);
     assert.ok(alternates['en']);
     assert.ok(alternates['x-default']);
-    assert.ok(alternates['es'].endsWith('/es/marca/seat'));
-    assert.ok(alternates['en'].endsWith('/en/marca/seat'));
+    assert.ok(alternates['es'].endsWith('/es/llamadas-revision/marca/seat'));
+    assert.ok(alternates['en'].endsWith('/en/recalls/marca/seat'));
     assert.equal(alternates['x-default'], alternates['es']);
 
-    const canonicalEs = buildCanonicalUrl(path, 'es');
-    assert.ok(canonicalEs.endsWith('/es/marca/seat'));
+    const canonicalEs = absoluteUrl(path, 'es');
+    assert.ok(canonicalEs.endsWith('/es/llamadas-revision/marca/seat'));
   });
 
   test('sitemap generates valid XML route entries with language alternates', async () => {
@@ -127,12 +128,15 @@ describe('Offline XML Fixture Import & Structural Integrity Tests', () => {
     assert.ok(entries.length > 100);
 
     // Verify home entries
-    const homeEntry = entries.find(e => e.url.endsWith('/es'));
+    const homeEntry = entries.find(e => e.url.endsWith('/es/llamadas-revision'));
     assert.ok(homeEntry);
     assert.equal(homeEntry.priority, 1.0);
     assert.ok(homeEntry.alternates?.languages?.['es']);
     assert.ok(homeEntry.alternates?.languages?.['en']);
     assert.ok(homeEntry.alternates?.languages?.['x-default']);
+
+    // Solo URLs del idioma de la compilación
+    assert.ok(entries.every(e => e.url.includes('/es/llamadas-revision')));
 
     // Verify brand entries
     const brandEntry = entries.find(e => e.url.includes('/marca/'));
