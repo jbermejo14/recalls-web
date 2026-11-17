@@ -1,28 +1,41 @@
-# RECALLSCOPE | Consultor de Llamadas a Revisión (Safety Gate UE)
+# Ododex · Llamadas a revisión (Safety Gate UE)
 
 Plataforma de SEO programático bilingüe (Español / Inglés) para la consulta de campañas de llamada a revisión (recalls), defectos de seguridad y alertas publicadas sobre vehículos de motor notificadas a través de **Safety Gate** (sistema de alerta rápida de la Comisión Europea / RAPEX).
+
+Forma parte de la red **Ododex** y se publica como sitio estático, una compilación por idioma:
+
+| Idioma | URL pública | Exportación |
+|---|---|---|
+| Español | `https://ododex.com/es/llamadas-revision` | `out-es/` |
+| Inglés | `https://ododex.com/en/recalls` | `out-en/` |
+
+El diseño está en [`ARCHITECTURE.md`](ARCHITECTURE.md). La publicación (ensamblado, Workers de Cloudflare, `robots.txt`) la hace el proyecto hermano `../ododex-sitio`.
 
 ---
 
 ## 🚀 Características Principales
 
 1. **SEO Programático Completo**:
-   - `/[lang]` (Home): Buscador en tiempo real, estadísticas globales, directorio de marcas y últimas campañas.
-   - `/[lang]/marca/[marca]`: Ficha completa por fabricante con desglose objetivo por categoría de peligro, desglose por año y catálogo de modelos.
-   - `/[lang]/marca/[marca]/[modelo]`: *"Llamadas a revisión del {marca} {modelo}"*, con histórico íntegro de campañas que afectan al modelo.
-   - `/[lang]/campana/[caseNumber-slug]`: Ficha técnica de la alerta con el peligro descrito en Safety Gate, medidas correctoras impuestas/adoptadas, fechas de fabricación, país notificador y enlace directo a la alerta original en ec.europa.eu.
+   Rutas internas, iguales en los dos idiomas bajo su ruta base:
+   - `/` (Home): buscador, estadísticas globales, directorio de marcas y últimas campañas.
+   - `/marca/[marca]`: Ficha completa por fabricante con desglose objetivo por categoría de peligro, desglose por año y catálogo de modelos.
+   - `/marca/[marca]/[modelo]`: *"Llamadas a revisión del {marca} {modelo}"*, con histórico íntegro de campañas que afectan al modelo.
+   - `/campana/[caseNumber-slug]`: Ficha técnica de la alerta con el peligro descrito en Safety Gate, medidas correctoras impuestas/adoptadas, fechas de fabricación, país notificador y enlace directo a la alerta original en ec.europa.eu.
 2. **Sin Puntuaciones Engañosas**:
    - Eliminadas las notas artificiales (A+ a F) y puntuaciones ficticias de fiabilidad.
    - Presentación de métricas objetivas (volumen de campañas, categorías de riesgo, años y fechas publicadas) acompañadas de un aviso metodológico transparente: **el número de llamadas a revisión no mide la fiabilidad de un vehículo**, puesto que no pondera el volumen de ventas del fabricante ni la diligencia voluntaria de la marca para subsanar defectos preventivos.
 3. **Bilingüe con SEO Internacional**:
-   - Soporte nativo para `/es/...` y `/en/...`.
-   - Etiquetas `hreflang` recíprocas (`es`, `en`) y fallback canónico `x-default`.
+   - Cada idioma se compila aparte con `RECALLS_LANG` (`es` o `en`), que fija la ruta base y la carpeta de exportación (`src/lib/site.ts`, `next.config.ts`).
+   - Etiquetas `hreflang` recíprocas entre `/es/llamadas-revision` y `/en/recalls`, con `x-default` en español.
    - `canonical` absoluto configurable mediante `NEXT_PUBLIC_SITE_URL`.
    - Datos estructurados Schema.org `BreadcrumbList` en todas las páginas.
-   - Generación automática de `sitemap.xml` dinámico y `robots.txt`.
+   - `sitemap.xml` estático por idioma. `robots.txt` lo sirve la raíz de `ododex.com`.
+   - Campañas y modelos se enlazan con `<a>` normales (`InternalLink`): se publican solo como HTML para caber en el límite de ficheros de Cloudflare.
    - Los textos de peligro y medidas se presentan en su idioma original de Safety Gate acompañados del distintivo *"Texto original de Safety Gate"*, evitando traducciones automáticas imprecisas en componentes críticos de seguridad.
-4. **Diseño y Modo Oscuro**:
-   - Paleta de diseño basada en Negro y Naranja (`#FF5500`), con selector rápido de modo oscuro / claro y persistencia en `localStorage`.
+4. **Marca, diseño y legales de Ododex**:
+   - Tokens de color de la red Ododex por tema (`data-theme`, preferencia en `localStorage['ododex-theme']`), sin colores fijos en los componentes; contraste AA comprobado por pruebas.
+   - Aviso legal, privacidad y cookies en el idioma de la compilación, con los datos del titular de `config/titular.json` (fuera de git; plantilla en `config/titular.example.json`).
+   - AdSense con el mensaje de consentimiento de Google si `NEXT_PUBLIC_ADSENSE_CLIENT` tiene un `ca-pub-` válido.
    - Totalmente responsivo y adaptado a móviles.
 5. **Seguridad y Privacidad de Datos**:
    - Eliminados endpoints inseguros (`POST /api/reload-xml`) y políticas CORS abiertas.
@@ -83,11 +96,13 @@ Copia el fichero `.env.example` a `.env`:
 cp .env.example .env
 ```
 
-Configuración requerida:
-```env
-# URL base para canonicals, hreflang y sitemap.xml (sin barra final)
-NEXT_PUBLIC_SITE_URL=http://localhost:3050
-```
+| Variable | Uso | Por defecto |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | Origen sin barra final para canonical, hreflang y sitemap. En producción, `https://ododex.com` | `http://localhost:3050` |
+| `RECALLS_LANG` | Idioma de la compilación: `es` o `en`. Otro valor hace fallar la compilación | `es` |
+| `NEXT_PUBLIC_ADSENSE_CLIENT` | Editor de AdSense (`ca-pub-` y 16 dígitos). Vacía: sin AdSense ni botón de cookies | vacía |
+
+`../ododex-sitio` pasa estas variables al compilar para producción.
 
 ---
 
@@ -127,12 +142,9 @@ La aplicación estará disponible en [http://localhost:3050](http://localhost:30
 npm run build
 ```
 
-Nota: `npm run build` usa `--webpack`. En Windows con una política de Control de Aplicaciones que bloquea los binarios nativos (`@next/swc-win32-x64-msvc`, `@tailwindcss/oxide-win32-x64-msvc`), Next.js cae a WASM y Turbopack no funciona. Tailwind se procesa entonces con `@tailwindcss/oxide-wasm32-wasi`, que npm solo instala con `npm install --force` porque su `cpu` es `wasm32`. Además, el escáner de ficheros de ese binario WASI no encuentra ninguno en Windows (el CSS saldría sin utilidades), por lo que `tailwind-wasi-sources.cjs` lee `src/` con Node y se lo pasa a Tailwind con `@source inline()`; con el binario nativo (Linux) no hace nada. Si cambias la configuración y el CSS no cambia, la caché de webpack (`.next/cache`) puede devolver el anterior: modifica `src/app/globals.css` para invalidarla. Turbopack lee el mismo `postcss.config.mjs`.
+Compila los dos idiomas en serie (`build:es` y `build:en`, que usan `scripts/build-locale.mjs`) y genera `out-es/` y `out-en/`. Con exportación estática no hay `npm start`: para ver el resultado como en producción, usa `npm run preview` en `../ododex-sitio`.
 
-### Iniciar servidor de producción:
-```bash
-npm start
-```
+Nota: `npm run build` usa `--webpack`. En Windows con una política de Control de Aplicaciones que bloquea los binarios nativos (`@next/swc-win32-x64-msvc`, `@tailwindcss/oxide-win32-x64-msvc`), Next.js cae a WASM y Turbopack no funciona. Tailwind se procesa entonces con `@tailwindcss/oxide-wasm32-wasi`, que npm solo instala con `npm install --force` porque su `cpu` es `wasm32`. Además, el escáner de ficheros de ese binario WASI no encuentra ninguno en Windows (el CSS saldría sin utilidades), por lo que `tailwind-wasi-sources.cjs` lee `src/` con Node y se lo pasa a Tailwind con `@source inline()`; con el binario nativo (Linux) no hace nada. Si cambias la configuración y el CSS no cambia, la caché de webpack (`.next/cache`) puede devolver el anterior: modifica `src/app/globals.css` para invalidarla. Turbopack lee el mismo `postcss.config.mjs`.
 
 ---
 
