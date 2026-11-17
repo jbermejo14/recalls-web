@@ -56,7 +56,7 @@ export default function SearchClient({
       {/* Search Input Box */}
       <div className="relative max-w-3xl mx-auto">
         <div className="relative flex items-center">
-          <Search className="absolute left-4 w-5 h-5 text-[#FF5500] pointer-events-none" />
+          <Search className="absolute left-4 w-5 h-5 text-accent pointer-events-none" />
           <input
             type="text"
             value={query}
@@ -66,13 +66,13 @@ export default function SearchClient({
                 ? 'Buscar por marca, modelo (ej: 3008, Golf, Clase C), código de recall o caso...'
                 : 'Search by make, model (e.g. 3008, Golf, C-Class), recall code or case number...'
             }
-            className="w-full h-14 pl-12 pr-12 text-sm sm:text-base rounded-2xl bg-[var(--bg-surface-elevated)] border-2 border-[var(--border-color)] focus:border-[#FF5500] focus:outline-none text-[var(--text-primary)] transition-all shadow-lg shadow-black/20"
+            className="w-full h-14 pl-12 pr-12 text-sm sm:text-base rounded-2xl bg-[var(--bg-surface-elevated)] border-2 border-[var(--border-color)] focus:border-accent focus:outline-none text-[var(--text-primary)] transition-all shadow-lg"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="absolute right-4 p-1 rounded-full hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)]"
-              title="Limpiar"
+              className="absolute right-4 p-1 rounded-full hover:bg-[var(--bg-surface-elevated)] text-[var(--text-muted)]"
+              title={lang === 'es' ? 'Limpiar' : 'Clear'}
             >
               <X className="w-4 h-4" />
             </button>
@@ -88,8 +88,8 @@ export default function SearchClient({
             onClick={() => { setSelectedRisk('all'); setSelectedBrand('all'); }}
             className={`px-3 py-1.5 rounded-full font-semibold border transition-all ${
               selectedRisk === 'all' && selectedBrand === 'all'
-                ? 'bg-[#FF5500] text-white border-[#FF5500]'
-                : 'bg-[var(--bg-surface-elevated)] border-[var(--border-color)] text-[var(--text-secondary)] hover:border-[#FF5500]'
+                ? 'bg-accent-solid text-on-accent border-accent'
+                : 'bg-[var(--bg-surface-elevated)] border-[var(--border-color)] text-[var(--text-secondary)] hover:border-accent'
             }`}
           >
             {lang === 'es' ? 'Todos los registros' : 'All alerts'}
@@ -98,8 +98,8 @@ export default function SearchClient({
             onClick={() => setSelectedRisk(selectedRisk === 'fire' ? 'all' : 'fire')}
             className={`px-3 py-1.5 rounded-full font-semibold border transition-all flex items-center gap-1.5 ${
               selectedRisk === 'fire'
-                ? 'bg-red-500 text-white border-red-500'
-                : 'bg-[var(--bg-surface-elevated)] border-[var(--border-color)] text-[var(--text-secondary)] hover:border-red-500'
+                ? 'bg-negative-soft text-negative border-negative'
+                : 'bg-[var(--bg-surface-elevated)] border-[var(--border-color)] text-[var(--text-secondary)] hover:border-negative'
             }`}
           >
             <Flame className="w-3.5 h-3.5" />
@@ -109,8 +109,8 @@ export default function SearchClient({
             onClick={() => setSelectedRisk(selectedRisk === 'injuries' ? 'all' : 'injuries')}
             className={`px-3 py-1.5 rounded-full font-semibold border transition-all flex items-center gap-1.5 ${
               selectedRisk === 'injuries'
-                ? 'bg-amber-500 text-white border-amber-500'
-                : 'bg-[var(--bg-surface-elevated)] border-[var(--border-color)] text-[var(--text-secondary)] hover:border-amber-500'
+                ? 'bg-warning-soft text-warning border-warning'
+                : 'bg-[var(--bg-surface-elevated)] border-[var(--border-color)] text-[var(--text-secondary)] hover:border-warning'
             }`}
           >
             <ShieldAlert className="w-3.5 h-3.5" />
@@ -119,7 +119,7 @@ export default function SearchClient({
           <select
             value={selectedBrand}
             onChange={(e) => setSelectedBrand(e.target.value)}
-            className="px-3 py-1.5 rounded-full font-semibold bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:border-[#FF5500] text-xs focus:outline-none"
+            className="px-3 py-1.5 rounded-full font-semibold bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:border-accent text-xs focus:outline-none"
           >
             <option value="all">{lang === 'es' ? 'Todas las marcas' : 'All makes'}</option>
             {brands.slice(0, 30).map(b => (
@@ -132,7 +132,7 @@ export default function SearchClient({
       {/* Matching Brands Quick Links if searching */}
       {query && filteredBrands.length > 0 && (
         <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-5">
-          <div className="text-xs font-bold text-[#FF5500] uppercase tracking-wider mb-3">
+          <div className="text-xs font-bold text-accent uppercase tracking-wider mb-3">
             {lang === 'es' ? 'Marcas coincidentes:' : 'Matching makes:'}
           </div>
           <div className="flex flex-wrap gap-2">
@@ -140,11 +140,11 @@ export default function SearchClient({
               <InternalLink
                 key={b.brandSlug}
                 href={`/marca/${b.brandSlug}`}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500] text-xs font-bold text-[var(--text-primary)] transition-all group"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-accent text-xs font-bold text-[var(--text-primary)] transition-all group"
               >
                 <span>{b.brand}</span>
                 <span className="text-[10px] text-[var(--text-muted)]">({b.totalRecalls})</span>
-                <ArrowRight className="w-3 h-3 text-[#FF5500] group-hover:translate-x-0.5 transition-transform" />
+                <ArrowRight className="w-3 h-3 text-accent group-hover:translate-x-0.5 transition-transform" />
               </InternalLink>
             ))}
           </div>
@@ -176,11 +176,11 @@ export default function SearchClient({
               <InternalLink
                 key={r.caseNumber}
                 href={`/campana/${r.slug}`}
-                className="group p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] hover:border-[#FF5500] hover:shadow-lg hover:shadow-[#FF5500]/10 transition-all flex flex-col justify-between"
+                className="group p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] hover:border-accent  transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="text-xs font-black tracking-wider text-[#FF5500] uppercase">
+                    <span className="text-xs font-black tracking-wider text-accent uppercase">
                       {r.brand}
                     </span>
                     <span className="text-[11px] font-mono text-[var(--text-muted)]">
@@ -188,7 +188,7 @@ export default function SearchClient({
                     </span>
                   </div>
 
-                  <h4 className="font-bold text-sm text-[var(--text-primary)] line-clamp-1 mb-1.5 group-hover:text-[#FF5500] transition-colors">
+                  <h4 className="font-bold text-sm text-[var(--text-primary)] line-clamp-1 mb-1.5 group-hover:text-accent transition-colors">
                     {r.models.length > 0 ? r.models.join(', ') : r.brand}
                   </h4>
 

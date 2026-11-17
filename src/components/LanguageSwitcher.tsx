@@ -9,7 +9,7 @@ const LANGUAGE_LABELS: Record<Locale, { flag: string; code: string; title: strin
 };
 
 const ITEM_BASE = 'px-2.5 py-1 rounded-full transition-all';
-const ITEM_ACTIVE = 'bg-[#FF5500] text-white shadow-sm';
+const ITEM_ACTIVE = 'bg-accent-solid text-on-accent shadow-sm';
 const ITEM_INACTIVE = 'text-[var(--text-muted)] hover:text-[var(--text-primary)]';
 
 /**

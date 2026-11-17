@@ -82,7 +82,7 @@ export default async function BrandPage({
       <section className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 text-[#FF5500] text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-bold uppercase tracking-wider">
               <Car className="w-3.5 h-3.5" />
               <span>{dict.officialSourceNotice}</span>
             </div>
@@ -96,8 +96,8 @@ export default async function BrandPage({
 
           {/* Quick stats badges */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <div className="p-4 rounded-xl bg-[var(--bg-page)] border border-[var(--border-color)] text-center min-w-[110px]">
-              <div className="text-2xl font-black text-[#FF5500]">
+            <div className="p-4 rounded-xl bg-[var(--bg-body)] border border-[var(--border-color)] text-center min-w-[110px]">
+              <div className="text-2xl font-black text-accent">
                 {brand.totalRecalls}
               </div>
               <div className="text-xs font-semibold text-[var(--text-muted)] mt-1">
@@ -105,7 +105,7 @@ export default async function BrandPage({
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-[var(--bg-page)] border border-[var(--border-color)] text-center min-w-[110px]">
+            <div className="p-4 rounded-xl bg-[var(--bg-body)] border border-[var(--border-color)] text-center min-w-[110px]">
               <div className="text-2xl font-black text-[var(--text-primary)]">
                 {brand.models.length}
               </div>
@@ -114,7 +114,7 @@ export default async function BrandPage({
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-[var(--bg-page)] border border-[var(--border-color)] text-center col-span-2 sm:col-span-1 min-w-[110px]">
+            <div className="p-4 rounded-xl bg-[var(--bg-body)] border border-[var(--border-color)] text-center col-span-2 sm:col-span-1 min-w-[110px]">
               <div className="text-sm font-black text-[var(--text-primary)] mt-1 font-mono">
                 {brand.lastRecallDate || 'N/A'}
               </div>
@@ -134,7 +134,7 @@ export default async function BrandPage({
         {/* Risk Type Breakdown */}
         <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 space-y-4">
           <h2 className="text-lg font-black text-[var(--text-primary)] flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-[#FF5500]" />
+            <AlertTriangle className="w-5 h-5 text-accent" />
             <span>{dict.brandPage.riskBreakdown}</span>
           </h2>
           <p className="text-xs text-[var(--text-muted)]">
@@ -157,9 +157,9 @@ export default async function BrandPage({
                         {count} ({percent}%)
                       </span>
                     </div>
-                    <div className="w-full h-2 rounded-full bg-[var(--bg-page)] overflow-hidden">
+                    <div className="w-full h-2 rounded-full bg-[var(--bg-body)] overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-[#FF5500] to-[#E04B00] rounded-full"
+                        className="h-full bg-accent rounded-full"
                         style={{ width: `${percent}%` }}
                       />
                     </div>
@@ -173,7 +173,7 @@ export default async function BrandPage({
         {/* Year Breakdown */}
         <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 space-y-4">
           <h2 className="text-lg font-black text-[var(--text-primary)] flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-[#FF5500]" />
+            <Calendar className="w-5 h-5 text-accent" />
             <span>{dict.brandPage.yearBreakdown}</span>
           </h2>
           <p className="text-xs text-[var(--text-muted)]">
@@ -186,10 +186,10 @@ export default async function BrandPage({
             {sortedYears.map(([yr, count]) => (
               <div
                 key={yr}
-                className="flex items-center justify-between p-2 rounded-lg bg-[var(--bg-page)] text-xs border border-[var(--border-color)]"
+                className="flex items-center justify-between p-2 rounded-lg bg-[var(--bg-body)] text-xs border border-[var(--border-color)]"
               >
                 <span className="font-mono font-bold text-[var(--text-primary)]">{yr}</span>
-                <span className="font-bold text-[#FF5500]">{count} {dict.breadcrumbs.campaigns}</span>
+                <span className="font-bold text-accent">{count} {dict.breadcrumbs.campaigns}</span>
               </div>
             ))}
           </div>
@@ -200,7 +200,7 @@ export default async function BrandPage({
       <section className="space-y-4">
         <div className="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
           <h2 className="text-xl font-black text-[var(--text-primary)] flex items-center gap-2">
-            <Layers className="w-5 h-5 text-[#FF5500]" />
+            <Layers className="w-5 h-5 text-accent" />
             <span>{formatText(dict.brandPage.modelsHeader, { brand: brand.brand })}</span>
           </h2>
           <span className="text-xs font-bold text-[var(--text-muted)]">
@@ -213,17 +213,17 @@ export default async function BrandPage({
             <InternalLink
               key={m.slug}
               href={`/marca/${brand.brandSlug}/${m.slug}`}
-              className="group p-4 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500]/50 transition-all flex flex-col justify-between"
+              className="group p-4 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-accent transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="text-sm font-bold text-[var(--text-primary)] group-hover:text-[#FF5500] transition-colors truncate">
+                <div className="text-sm font-bold text-[var(--text-primary)] group-hover:text-accent transition-colors truncate">
                   {m.name}
                 </div>
                 <div className="text-xs text-[var(--text-muted)] mt-1">
                   {m.recallsCount} {dict.breadcrumbs.campaigns}
                 </div>
               </div>
-              <div className="mt-3 pt-2 border-t border-[var(--border-color)] flex items-center justify-between text-xs text-[#FF5500] font-semibold">
+              <div className="mt-3 pt-2 border-t border-[var(--border-color)] flex items-center justify-between text-xs text-accent font-semibold">
                 <span>{dict.breadcrumbs.campaigns}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -236,7 +236,7 @@ export default async function BrandPage({
       <section className="space-y-4 pt-4">
         <div className="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
           <h2 className="text-xl font-black text-[var(--text-primary)] flex items-center gap-2">
-            <ShieldAlert className="w-5 h-5 text-[#FF5500]" />
+            <ShieldAlert className="w-5 h-5 text-accent" />
             <span>{dict.brandPage.campaignsHeader} ({recalls.length})</span>
           </h2>
         </div>
@@ -246,12 +246,12 @@ export default async function BrandPage({
             <InternalLink
               key={r.slug}
               href={`/campana/${r.slug}`}
-              className="group block p-5 rounded-2xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500]/50 transition-all shadow-sm"
+              className="group block p-5 rounded-2xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-accent transition-all shadow-sm"
             >
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div className="space-y-2 flex-1">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <span className="text-xs font-mono font-bold text-[#FF5500] bg-[#FF5500]/10 px-2.5 py-1 rounded-md">
+                    <span className="text-xs font-mono font-bold text-accent bg-accent-soft px-2.5 py-1 rounded-md">
                       {r.caseNumber}
                     </span>
                     <span className="text-xs text-[var(--text-muted)]">
@@ -261,7 +261,7 @@ export default async function BrandPage({
                   </div>
 
                   {r.product && (
-                    <h3 className="text-base font-bold text-[var(--text-primary)] group-hover:text-[#FF5500] transition-colors">
+                    <h3 className="text-base font-bold text-[var(--text-primary)] group-hover:text-accent transition-colors">
                       {r.product}
                     </h3>
                   )}
@@ -270,7 +270,7 @@ export default async function BrandPage({
                     <div className="flex items-center gap-1.5 flex-wrap text-xs text-[var(--text-muted)]">
                       <span className="font-semibold text-[var(--text-secondary)]">{dict.breadcrumbs.models}:</span>
                       {r.models.map(m => (
-                        <span key={m} className="px-2 py-0.5 rounded bg-[var(--bg-page)] border border-[var(--border-color)] text-[var(--text-primary)]">
+                        <span key={m} className="px-2 py-0.5 rounded bg-[var(--bg-body)] border border-[var(--border-color)] text-[var(--text-primary)]">
                           {m}
                         </span>
                       ))}
@@ -283,7 +283,7 @@ export default async function BrandPage({
                 </div>
 
                 <div className="shrink-0 flex md:flex-col items-center md:items-end justify-between md:justify-center gap-2 pt-2 md:pt-0">
-                  <span className="text-xs font-bold text-[#FF5500] inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  <span className="text-xs font-bold text-accent inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                     <span>{dict.breadcrumbs.campaigns}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>

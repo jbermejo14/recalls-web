@@ -40,19 +40,19 @@ export default function HomePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-12">
         {/* Hero Section */}
         <section className="text-center space-y-6 pt-4 sm:pt-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-bold tracking-wide uppercase">
-            <span className="w-2 h-2 rounded-full bg-[#FF5500] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent-soft border border-accent text-accent text-xs font-bold tracking-wide uppercase">
+            <span className="w-2 h-2 rounded-full bg-accent-solid animate-pulse" />
             <span>Safety Gate UE • RAPEX</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[var(--text-primary)] tracking-tight leading-tight max-w-4xl mx-auto">
             {locale === 'es' ? (
               <>
-                Consultor de <span className="text-[#FF5500]">Llamadas a Revisión</span> y Alertas de Vehículos
+                Consultor de <span className="text-accent">Llamadas a Revisión</span> y Alertas de Vehículos
               </>
             ) : (
               <>
-                European Vehicle <span className="text-[#FF5500]">Recall & Safety</span> Gate Alerts Directory
+                European Vehicle <span className="text-accent">Recall & Safety</span> Gate Alerts Directory
               </>
             )}
           </h1>
@@ -66,7 +66,7 @@ export default function HomePage() {
           {/* Quick Metrics Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto pt-4">
             <div className="p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] text-center shadow-sm">
-              <div className="text-2xl sm:text-3xl font-black text-[#FF5500]">
+              <div className="text-2xl sm:text-3xl font-black text-accent">
                 {dataset.totalRecalls.toLocaleString()}
               </div>
               <div className="text-xs font-semibold text-[var(--text-muted)] mt-1">
@@ -93,7 +93,7 @@ export default function HomePage() {
             </div>
 
             <div className="p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] text-center shadow-sm">
-              <div className="text-2xl sm:text-3xl font-black text-[#FF5500]">
+              <div className="text-2xl sm:text-3xl font-black text-accent">
                 2005 - 2026
               </div>
               <div className="text-xs font-semibold text-[var(--text-muted)] mt-1">
@@ -110,7 +110,7 @@ export default function HomePage() {
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl sm:text-2xl font-black text-[var(--text-primary)] flex items-center gap-2">
-              <ShieldAlert className="w-6 h-6 text-[#FF5500]" />
+              <ShieldAlert className="w-6 h-6 text-accent" />
               <span>{dict.home.searchHeader}</span>
             </h2>
             <span className="text-xs text-[var(--text-muted)]">
@@ -130,7 +130,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-[var(--border-color)] pb-4">
             <div>
               <h2 className="text-xl sm:text-2xl font-black text-[var(--text-primary)] flex items-center gap-2">
-                <Car className="w-6 h-6 text-[#FF5500]" />
+                <Car className="w-6 h-6 text-accent" />
                 <span>{dict.home.topBrandsTitle}</span>
               </h2>
               <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1">
@@ -147,10 +147,10 @@ export default function HomePage() {
               <InternalLink
                 key={b.brandSlug}
                 href={`/marca/${b.brandSlug}`}
-                className="group p-4 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500]/50 transition-all shadow-sm hover:shadow-md flex flex-col justify-between"
+                className="group p-4 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-accent transition-all shadow-sm hover:shadow-md flex flex-col justify-between"
               >
                 <div>
-                  <div className="text-sm font-black text-[var(--text-primary)] group-hover:text-[#FF5500] transition-colors truncate">
+                  <div className="text-sm font-black text-[var(--text-primary)] group-hover:text-accent transition-colors truncate">
                     {b.brand}
                   </div>
                   <div className="text-xs text-[var(--text-muted)] mt-1">
@@ -158,10 +158,10 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="mt-4 pt-2 border-t border-[var(--border-color)] flex items-center justify-between text-xs">
-                  <span className="font-bold text-[#FF5500]">
+                  <span className="font-bold text-accent">
                     {b.totalRecalls} {dict.breadcrumbs.campaigns}
                   </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:translate-x-1 group-hover:text-[#FF5500] transition-transform" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:translate-x-1 group-hover:text-accent transition-transform" />
                 </div>
               </InternalLink>
             ))}
@@ -173,7 +173,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-[var(--border-color)] pb-4">
             <div>
               <h2 className="text-xl sm:text-2xl font-black text-[var(--text-primary)] flex items-center gap-2">
-                <Calendar className="w-6 h-6 text-[#FF5500]" />
+                <Calendar className="w-6 h-6 text-accent" />
                 <span>{dict.home.latestRecallsTitle}</span>
               </h2>
               <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1">
@@ -189,11 +189,11 @@ export default function HomePage() {
               <InternalLink
                 key={r.slug}
                 href={`/campana/${r.slug}`}
-                className="group p-5 rounded-2xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500]/50 transition-all shadow-sm flex flex-col justify-between space-y-3"
+                className="group p-5 rounded-2xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-accent transition-all shadow-sm flex flex-col justify-between space-y-3"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <span className="text-xs font-mono font-bold text-[#FF5500] bg-[#FF5500]/10 px-2.5 py-1 rounded-md">
+                    <span className="text-xs font-mono font-bold text-accent bg-accent-soft px-2.5 py-1 rounded-md">
                       {r.caseNumber}
                     </span>
                     <span className="text-xs text-[var(--text-muted)]">
@@ -202,7 +202,7 @@ export default function HomePage() {
                   </div>
 
                   <div>
-                    <h3 className="font-black text-base text-[var(--text-primary)] group-hover:text-[#FF5500] transition-colors">
+                    <h3 className="font-black text-base text-[var(--text-primary)] group-hover:text-accent transition-colors">
                       {r.brand} {r.models.length > 0 ? `• ${r.models.join(', ')}` : ''}
                     </h3>
                     {r.product && (
@@ -219,7 +219,7 @@ export default function HomePage() {
 
                 <div className="pt-2 border-t border-[var(--border-color)] flex items-center justify-between">
                   <RiskBadge risk={r.riskType} lang={locale} />
-                  <span className="text-xs font-bold text-[#FF5500] inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  <span className="text-xs font-bold text-accent inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                     <span>{dict.breadcrumbs.campaigns}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
@@ -232,7 +232,7 @@ export default function HomePage() {
         {/* Institutional & Legal Re-use notice */}
         <section className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#003399] text-white flex items-center justify-center font-bold text-sm">
+            <div className="w-10 h-10 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] flex items-center justify-center font-bold text-sm">
               🇪🇺
             </div>
             <div>
@@ -256,7 +256,7 @@ export default function HomePage() {
               href="https://ec.europa.eu/safety-gate-alerts/screen/webReport"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-[#FF5500] hover:underline"
+              className="inline-flex items-center gap-1.5 text-accent hover:underline"
             >
               <span>{dict.viewOfficialAlert}</span>
               <ExternalLink className="w-3.5 h-3.5" />

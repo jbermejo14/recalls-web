@@ -91,7 +91,7 @@ export default async function ModelPage({
       <section className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 text-[#FF5500] text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-bold uppercase tracking-wider">
               <Car className="w-3.5 h-3.5" />
               <InternalLink href={`/marca/${brand.brandSlug}`} className="hover:underline">
                 {brand.brand}
@@ -109,8 +109,8 @@ export default async function ModelPage({
 
           {/* Quick stats badges */}
           <div className="flex items-center gap-3">
-            <div className="p-4 rounded-xl bg-[var(--bg-page)] border border-[var(--border-color)] text-center min-w-[120px]">
-              <div className="text-3xl font-black text-[#FF5500]">
+            <div className="p-4 rounded-xl bg-[var(--bg-body)] border border-[var(--border-color)] text-center min-w-[120px]">
+              <div className="text-3xl font-black text-accent">
                 {model.recallsCount}
               </div>
               <div className="text-xs font-semibold text-[var(--text-muted)] mt-1">
@@ -118,7 +118,7 @@ export default async function ModelPage({
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-[var(--bg-page)] border border-[var(--border-color)] text-center min-w-[120px]">
+            <div className="p-4 rounded-xl bg-[var(--bg-body)] border border-[var(--border-color)] text-center min-w-[120px]">
               <div className="text-sm font-black text-[var(--text-primary)] mt-1 font-mono">
                 {model.lastRecallDate || 'N/A'}
               </div>
@@ -138,7 +138,7 @@ export default async function ModelPage({
         {/* Risk Breakdown */}
         <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 space-y-4">
           <h2 className="text-lg font-black text-[var(--text-primary)] flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-[#FF5500]" />
+            <AlertTriangle className="w-5 h-5 text-accent" />
             <span>{dict.modelPage.riskBreakdown}</span>
           </h2>
 
@@ -153,9 +153,9 @@ export default async function ModelPage({
                       {count} ({percent}%)
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-[var(--bg-page)] overflow-hidden">
+                  <div className="w-full h-2 rounded-full bg-[var(--bg-body)] overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-[#FF5500] to-[#E04B00] rounded-full"
+                      className="h-full bg-accent rounded-full"
                       style={{ width: `${percent}%` }}
                     />
                   </div>
@@ -168,7 +168,7 @@ export default async function ModelPage({
         {/* Year Breakdown */}
         <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 space-y-4">
           <h2 className="text-lg font-black text-[var(--text-primary)] flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-[#FF5500]" />
+            <Calendar className="w-5 h-5 text-accent" />
             <span>{dict.modelPage.yearBreakdown}</span>
           </h2>
 
@@ -176,10 +176,10 @@ export default async function ModelPage({
             {sortedYears.map(([yr, count]) => (
               <div
                 key={yr}
-                className="flex items-center justify-between p-2 rounded-lg bg-[var(--bg-page)] text-xs border border-[var(--border-color)]"
+                className="flex items-center justify-between p-2 rounded-lg bg-[var(--bg-body)] text-xs border border-[var(--border-color)]"
               >
                 <span className="font-mono font-bold text-[var(--text-primary)]">{yr}</span>
-                <span className="font-bold text-[#FF5500]">{count} {dict.breadcrumbs.campaigns}</span>
+                <span className="font-bold text-accent">{count} {dict.breadcrumbs.campaigns}</span>
               </div>
             ))}
           </div>
@@ -190,7 +190,7 @@ export default async function ModelPage({
       <section className="space-y-4">
         <div className="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
           <h2 className="text-xl font-black text-[var(--text-primary)] flex items-center gap-2">
-            <ShieldAlert className="w-5 h-5 text-[#FF5500]" />
+            <ShieldAlert className="w-5 h-5 text-accent" />
             <span>{dict.modelPage.campaignListTitle} ({recalls.length})</span>
           </h2>
         </div>
@@ -200,11 +200,11 @@ export default async function ModelPage({
             <InternalLink
               key={r.slug}
               href={`/campana/${r.slug}`}
-              className="group block p-5 rounded-2xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[#FF5500]/50 transition-all shadow-sm"
+              className="group block p-5 rounded-2xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-accent transition-all shadow-sm"
             >
               <div className="space-y-2">
                 <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-xs font-mono font-bold text-[#FF5500] bg-[#FF5500]/10 px-2.5 py-1 rounded-md">
+                  <span className="text-xs font-mono font-bold text-accent bg-accent-soft px-2.5 py-1 rounded-md">
                     {r.caseNumber}
                   </span>
                   <span className="text-xs text-[var(--text-muted)]">
@@ -214,7 +214,7 @@ export default async function ModelPage({
                 </div>
 
                 {r.product && (
-                  <h3 className="text-base font-bold text-[var(--text-primary)] group-hover:text-[#FF5500] transition-colors">
+                  <h3 className="text-base font-bold text-[var(--text-primary)] group-hover:text-accent transition-colors">
                     {r.product}
                   </h3>
                 )}
@@ -227,7 +227,7 @@ export default async function ModelPage({
                   <span className="text-[var(--text-muted)]">
                     {dict.campaignPage.notifyingCountry} <strong className="text-[var(--text-primary)]">{r.notifyingCountry || 'UE'}</strong>
                   </span>
-                  <span className="font-bold text-[#FF5500] inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  <span className="font-bold text-accent inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                     <span>{dict.breadcrumbs.campaigns}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
@@ -242,7 +242,7 @@ export default async function ModelPage({
       <div className="pt-4 flex items-center justify-between">
         <InternalLink
           href={`/marca/${brand.brandSlug}`}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-[#FF5500] hover:underline"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:underline"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>

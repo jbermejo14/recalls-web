@@ -21,7 +21,7 @@ export default function NotFound() {
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
       <div className="max-w-md w-full text-center bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-8 shadow-xl">
-        <div className="w-16 h-16 rounded-2xl bg-[#FF5500]/10 text-[#FF5500] flex items-center justify-center mx-auto mb-6">
+        <div className="w-16 h-16 rounded-2xl bg-accent-soft text-accent flex items-center justify-center mx-auto mb-6">
           <AlertCircle className="w-8 h-8" />
         </div>
 
@@ -32,7 +32,7 @@ export default function NotFound() {
 
         <Link
           href="/"
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] text-white font-bold text-sm transition-all shadow-md shadow-[#FF5500]/25"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-accent-solid hover:bg-accent-solid-hover text-on-accent font-bold text-sm transition-all shadow-md"
         >
           <Home className="w-4 h-4" />
           <span>{texts.home}</span>

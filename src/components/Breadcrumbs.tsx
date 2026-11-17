@@ -1,8 +1,10 @@
-import { ChevronRight } from 'lucide-react';
+import React from 'react';
 import InternalLink from './InternalLink';
-import { absoluteUrl } from '../lib/site';
+import { absoluteUrl, getLocale } from '../lib/site';
 import { generateBreadcrumbSchema, type BreadcrumbItem } from '../lib/seo';
+import { getDictionary } from '../i18n/get-dictionary';
 
+/** Migas de pan con su JSON-LD. `url` son rutas internas (sin ruta base). */
 export default function Breadcrumbs({
   items
 }: {
@@ -12,29 +14,28 @@ export default function Breadcrumbs({
     name: item.name,
     item: absoluteUrl(item.url)
   }));
-
-  const jsonLd = generateBreadcrumbSchema(schemaItems);
+  const label = getDictionary(getLocale()).header.breadcrumbsLabel;
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema(schemaItems)) }}
       />
-      <nav aria-label="Breadcrumbs" className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] py-3 overflow-x-auto whitespace-nowrap">
-        {items.map((crumb, idx) => {
-          const isLast = idx === items.length - 1;
+      <nav aria-label={label} className="breadcrumbs">
+        {items.map((crumb, index) => {
+          const isLast = index === items.length - 1;
           return (
-            <div key={crumb.url} className="flex items-center gap-1.5">
-              {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] shrink-0" />}
+            <React.Fragment key={`${index}-${crumb.url}`}>
+              {index > 0 && <span className="sep">/</span>}
               {isLast ? (
-                <span className="font-semibold text-[var(--text-primary)]">{crumb.name}</span>
-              ) : (
-                <InternalLink href={crumb.url} className="hover:text-[#FF5500] transition-colors">
+                <span className="current" aria-current="page">
                   {crumb.name}
-                </InternalLink>
+                </span>
+              ) : (
+                <InternalLink href={crumb.url}>{crumb.name}</InternalLink>
               )}
-            </div>
+            </React.Fragment>
           );
         })}
       </nav>
