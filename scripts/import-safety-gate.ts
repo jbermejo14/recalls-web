@@ -23,7 +23,7 @@
 import fs from 'fs';
 import path from 'path';
 import { XMLParser } from 'fast-xml-parser';
-import { normalizeBrand, extractModels, slugify, caseNumberToSlug } from '../src/lib/normalizer';
+import { normalizeBrand, extractModels, slugify, caseNumberToSlug, cleanSourceText } from '../src/lib/normalizer';
 import type { SafetyGateRecall, BrandSummary, SafetyGateDataset } from '../src/types/safety-gate';
 
 const DEFAULT_XML_PATH = path.join(process.cwd(), 'raw-data', 'safety-gate-motor-vehicles.xml');
@@ -117,8 +117,8 @@ export async function importSafetyGate(
     const rawName = getTagValue(raw.name);
     const rawTypeMod = getTagValue(raw.type_numberOfModel);
     const rawRisk = getTagValue(raw.riskType) || 'Injuries';
-    const rawDanger = getTagValue(raw.danger);
-    const rawMeasures = getTagValue(raw.measures);
+    const rawDanger = cleanSourceText(getTagValue(raw.danger));
+    const rawMeasures = cleanSourceText(getTagValue(raw.measures));
     const rawRef = getTagValue(raw.reference);
     const rawPubDate = getTagValue(raw.publicationDate);
     const notifyingCountry = getTagValue(raw.notifyingCountry);

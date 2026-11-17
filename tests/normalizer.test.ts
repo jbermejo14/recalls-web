@@ -1,7 +1,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'path';
-import { normalizeBrand, extractModels, slugify, caseNumberToSlug } from '../src/lib/normalizer';
+import { normalizeBrand, extractModels, slugify, caseNumberToSlug, cleanSourceText } from '../src/lib/normalizer';
 import { importSafetyGate } from '../scripts/import-safety-gate';
 import { generateBreadcrumbSchema } from '../src/lib/seo';
 import { absoluteUrl, alternateUrls } from '../src/lib/site';
@@ -142,5 +142,18 @@ describe('Offline XML Fixture Import & Structural Integrity Tests', () => {
     const brandEntry = entries.find(e => e.url.includes('/marca/'));
     assert.ok(brandEntry);
     assert.ok(brandEntry.priority && brandEntry.priority >= 0.7);
+  });
+});
+
+describe('cleanSourceText', () => {
+  test('quita el prefijo literal "null " que trae el XML de Safety Gate', () => {
+    assert.equal(cleanSourceText('null The product poses a risk.'), 'The product poses a risk.');
+    assert.equal(cleanSourceText('  NULL  Recall the vehicle. '), 'Recall the vehicle.');
+  });
+
+  test('no toca textos sin el prefijo ni palabras que empiezan por null', () => {
+    assert.equal(cleanSourceText('Recall the vehicle.'), 'Recall the vehicle.');
+    assert.equal(cleanSourceText('nullified warranty'), 'nullified warranty');
+    assert.equal(cleanSourceText(''), '');
   });
 });

@@ -129,3 +129,15 @@ export function extractModels(
 
   return Array.from(modelsFound);
 }
+
+// El XML de Safety Gate antepone a veces la cadena literal "null " a los textos
+// (p. ej. "null The product poses a risk…"): es un defecto del origen, no un valor.
+const SOURCE_NULL_PREFIX = /^null\s+/i;
+
+/**
+ * Limpia un texto libre del XML de Safety Gate: recorta espacios y quita el prefijo
+ * literal "null " que el origen añade a algunas descripciones.
+ */
+export function cleanSourceText(text: string): string {
+  return text.trim().replace(SOURCE_NULL_PREFIX, '');
+}
