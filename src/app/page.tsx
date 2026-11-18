@@ -6,6 +6,7 @@ import { getDictionary, formatText } from '../i18n/get-dictionary';
 import { getSafetyGateDataset, getTopBrands, getLatestRecalls } from '../lib/safety-gate-service';
 import { buildPageMetadata, generateBreadcrumbSchema } from '../lib/seo';
 import SearchClient from '../components/SearchClient';
+import AdSlot from '../components/AdSlot';
 import DisclaimerBanner from '../components/DisclaimerBanner';
 import RiskBadge from '../components/RiskBadge';
 
@@ -124,6 +125,8 @@ export default function HomePage() {
             recentRecalls={latestRecalls}
           />
         </section>
+
+        <AdSlot />
 
         {/* Brands Directory Grid */}
         <section id="marcas" className="space-y-6 pt-4">
@@ -269,6 +272,8 @@ export default function HomePage() {
             </span>
           </div>
         </section>
+
+        <AdSlot />
       </div>
     </>
   );

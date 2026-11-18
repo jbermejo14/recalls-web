@@ -7,6 +7,7 @@ import { getDictionary, formatText } from '../../../i18n/get-dictionary';
 import { getSafetyGateDataset, getRecallBySlug, getBrandBySlug } from '../../../lib/safety-gate-service';
 import { buildPageMetadata } from '../../../lib/seo';
 import Breadcrumbs from '../../../components/Breadcrumbs';
+import AdSlot from '../../../components/AdSlot';
 import DisclaimerBanner from '../../../components/DisclaimerBanner';
 import RiskBadge from '../../../components/RiskBadge';
 
@@ -258,6 +259,8 @@ export default async function CampaignPage({
         </div>
       </section>
 
+      <AdSlot />
+
       {/* Free EU Repair Legal Notice */}
       <section className="p-6 rounded-2xl bg-accent-soft border border-accent space-y-3">
         <div className="flex items-center gap-3">
@@ -297,6 +300,8 @@ export default async function CampaignPage({
           </a>
         )}
       </div>
+
+      <AdSlot />
     </div>
   );
 }

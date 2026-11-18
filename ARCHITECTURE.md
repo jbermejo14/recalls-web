@@ -127,3 +127,22 @@ Como en `../multas-dgt` (secciones 2.2, 2.3 y 2.6 de su `ARCHITECTURE.md`):
   - `index.html`, `404.html`, `sitemap.xml`;
   - una página por campaña, marca y modelo.
 - En pantalla (sesión principal, servida con `../ododex-sitio`): la home, una marca, un modelo, una campaña, el cambio de idioma y los legales, en los dos idiomas, en claro y oscuro, a 375 y 1280 px.
+
+## 5. Anuncios
+
+Bloques manuales de AdSense según la sección 8 de `../ododex-sitio/ARCHITECTURE.md`.
+
+- `src/components/AdSlot.tsx` (componente de cliente, export por defecto): no renderiza nada si `NEXT_PUBLIC_ADSENSE_CLIENT` no es `ca-pub-` más 16 dígitos (`getAdSenseClient`) o `NEXT_PUBLIC_ADSENSE_SLOT` no tiene 10 dígitos (`getAdSenseSlot`). Hace el `push` una sola vez (`useEffect` y `useRef`) y registra con `console.error` si falla.
+- Texto visible: clave `adLabel` de los diccionarios ("Publicidad" en `es`, "Advertisement" en `en`).
+- La clase `.ad-slot` está en `@layer components` de `src/app/globals.css`: 280 px de alto mínimo en móvil y 250 px desde `md`, con `--bg-surface`, `--border-color`, `--radius-md` y `--text-muted`.
+- Huecos (máximo 3 por página; ninguno dentro de formularios, listas de resultados ni pegado a botones):
+
+| Página | Hueco 1 | Hueco 2 |
+|---|---|---|
+| `/` | tras el buscador y antes del directorio de marcas | al final, tras el aviso institucional y antes del pie |
+| `/marca/[marca]` | tras el bloque principal (cabecera, aviso y desgloses) y antes de los modelos | al final, tras la lista de campañas |
+| `/marca/[marca]/[modelo]` | tras el bloque principal y antes de la lista de campañas | al final, tras el enlace de vuelta |
+| `/campana/[slug]` | tras la ficha y los detalles, antes del aviso de reparación gratuita | al final, tras la navegación inferior |
+
+- Sin anuncios: `/aviso-legal`, `/privacidad`, `/cookies` y la 404.
+- Pruebas: `tests/ad-slot.test.tsx`.

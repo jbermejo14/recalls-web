@@ -10,6 +10,7 @@
   "campaignsSingular": "1 safety recall campaign",
   "officialSourceNotice": "Data: Safety Gate, European Commission",
   "lastImportDate": "Last import: {date}",
+  "adLabel": "Advertisement",
   "disclaimerText": "Legal and methodological notice: The number of safety recall campaigns does not measure vehicle reliability and does not reflect sales volume or total units in circulation for each manufacturer. A campaign indicates that the manufacturer or public authorities have initiated free corrective or preventative safety measures to resolve a defect.",
   "originalTextBadge": "Original Safety Gate text",
   "originalNotice": "Technical descriptions of hazard and corrective measures are presented in their original language as recorded in the European Commission Safety Gate system.",

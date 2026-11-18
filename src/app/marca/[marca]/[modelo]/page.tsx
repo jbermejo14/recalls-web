@@ -7,6 +7,7 @@ import { getDictionary, formatText } from '../../../../i18n/get-dictionary';
 import { getAllBrands, getModelBySlugs } from '../../../../lib/safety-gate-service';
 import { buildPageMetadata } from '../../../../lib/seo';
 import Breadcrumbs from '../../../../components/Breadcrumbs';
+import AdSlot from '../../../../components/AdSlot';
 import DisclaimerBanner from '../../../../components/DisclaimerBanner';
 import RiskBadge from '../../../../components/RiskBadge';
 
@@ -186,6 +187,8 @@ export default async function ModelPage({
         </div>
       </section>
 
+      <AdSlot />
+
       {/* Model Recalls List */}
       <section className="space-y-4">
         <div className="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
@@ -250,6 +253,8 @@ export default async function ModelPage({
           </span>
         </InternalLink>
       </div>
+
+      <AdSlot />
     </div>
   );
 }

@@ -292,6 +292,31 @@ a {
   }
 }
 
+/* Hueco de anuncio manual (AdSlot): reserva altura para evitar saltos de contenido. */
+.ad-slot {
+  width: 100%;
+  max-width: 100%;
+  min-height: 280px;
+  overflow: hidden;
+  padding: 0.5rem 1rem 1rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.ad-slot__label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+}
+
+@media (min-width: 768px) {
+  .ad-slot {
+    min-height: 250px;
+  }
+}
+
 .table-responsive {
   overflow-x: auto;
 }
