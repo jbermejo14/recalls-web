@@ -3,6 +3,7 @@ import InternalLink from '../components/InternalLink';
 import { ShieldAlert, Car, Calendar, ExternalLink, ArrowRight, ShieldCheck, Database, Layers } from 'lucide-react';
 import { SITE_NAME, absoluteUrl, getLocale } from '../lib/site';
 import { getDictionary, formatText } from '../i18n/get-dictionary';
+import { productLabel } from '../lib/labels';
 import { getSafetyGateDataset, getTopBrands, getLatestRecalls } from '../lib/safety-gate-service';
 import { buildPageMetadata, generateBreadcrumbSchema } from '../lib/seo';
 import SearchClient from '../components/SearchClient';
@@ -210,7 +211,7 @@ export default function HomePage() {
                     </h3>
                     {r.product && (
                       <p className="text-xs text-[var(--text-muted)] line-clamp-1 mt-0.5">
-                        {r.product}
+                        {productLabel(r.product, locale)}
                       </p>
                     )}
                   </div>

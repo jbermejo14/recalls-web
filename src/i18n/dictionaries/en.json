@@ -73,16 +73,6 @@
     "brands": "Brands",
     "safetyGate": "EU Safety Gate"
   },
-  "risks": {
-    "Injuries": "Injuries",
-    "Fire": "Fire",
-    "Fire, Injuries": "Fire & Injuries",
-    "Environment": "Environment",
-    "Burns": "Burns",
-    "Chemical": "Chemical",
-    "Burns, Fire": "Burns & Fire",
-    "Other": "Other risks"
-  },
   "header": {
     "sectionsLabel": "Sections",
     "themeToLight": "Light mode",

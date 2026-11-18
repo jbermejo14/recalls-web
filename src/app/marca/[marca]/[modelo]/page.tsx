@@ -3,6 +3,7 @@ import InternalLink from '../../../../components/InternalLink';
 import { notFound } from 'next/navigation';
 import { ShieldAlert, Car, Calendar, ArrowRight, ArrowLeft, AlertTriangle, ExternalLink, ShieldCheck, Layers } from 'lucide-react';
 import { getLocale } from '../../../../lib/site';
+import { riskLabel, countryLabel, productLabel } from '../../../../lib/labels';
 import { getDictionary, formatText } from '../../../../i18n/get-dictionary';
 import { getAllBrands, getModelBySlugs } from '../../../../lib/safety-gate-service';
 import { buildPageMetadata } from '../../../../lib/seo';
@@ -149,7 +150,7 @@ export default async function ModelPage({
               return (
                 <div key={risk} className="space-y-1">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-[var(--text-secondary)]">{risk}</span>
+                    <span className="font-semibold text-[var(--text-secondary)]">{riskLabel(risk, locale)}</span>
                     <span className="font-mono text-[var(--text-muted)] font-bold">
                       {count} ({percent}%)
                     </span>
@@ -194,7 +195,7 @@ export default async function ModelPage({
         <div className="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
           <h2 className="text-xl font-black text-[var(--text-primary)] flex items-center gap-2">
             <ShieldAlert className="w-5 h-5 text-accent" />
-            <span>{dict.modelPage.campaignListTitle} ({recalls.length})</span>
+            <span>{formatText(dict.modelPage.campaignListTitle, { brand: brand.brand, model: model.name })} ({recalls.length})</span>
           </h2>
         </div>
 
@@ -218,7 +219,7 @@ export default async function ModelPage({
 
                 {r.product && (
                   <h3 className="text-base font-bold text-[var(--text-primary)] group-hover:text-accent transition-colors">
-                    {r.product}
+                    {productLabel(r.product, locale)}
                   </h3>
                 )}
 
@@ -228,7 +229,7 @@ export default async function ModelPage({
 
                 <div className="pt-2 border-t border-[var(--border-color)] flex items-center justify-between text-xs">
                   <span className="text-[var(--text-muted)]">
-                    {dict.campaignPage.notifyingCountry} <strong className="text-[var(--text-primary)]">{r.notifyingCountry || 'UE'}</strong>
+                    {dict.campaignPage.notifyingCountry} <strong className="text-[var(--text-primary)]">{countryLabel(r.notifyingCountry, locale) || 'UE'}</strong>
                   </span>
                   <span className="font-bold text-accent inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                     <span>{dict.breadcrumbs.campaigns}</span>

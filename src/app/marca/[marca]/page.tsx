@@ -3,6 +3,7 @@ import InternalLink from '../../../components/InternalLink';
 import { notFound } from 'next/navigation';
 import { ShieldAlert, Car, Calendar, ArrowRight, ArrowLeft, ExternalLink, Activity, AlertTriangle, Layers } from 'lucide-react';
 import { getLocale } from '../../../lib/site';
+import { riskLabel, countryLabel, productLabel } from '../../../lib/labels';
 import { getDictionary, formatText } from '../../../i18n/get-dictionary';
 import { getAllBrands, getBrandBySlug } from '../../../lib/safety-gate-service';
 import { buildPageMetadata } from '../../../lib/seo';
@@ -153,7 +154,7 @@ export default async function BrandPage({
                 return (
                   <div key={risk} className="space-y-1">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-[var(--text-secondary)]">{risk}</span>
+                      <span className="font-semibold text-[var(--text-secondary)]">{riskLabel(risk, locale)}</span>
                       <span className="font-mono text-[var(--text-muted)] font-bold">
                         {count} ({percent}%)
                       </span>
@@ -240,7 +241,7 @@ export default async function BrandPage({
         <div className="border-b border-[var(--border-color)] pb-3 flex items-center justify-between">
           <h2 className="text-xl font-black text-[var(--text-primary)] flex items-center gap-2">
             <ShieldAlert className="w-5 h-5 text-accent" />
-            <span>{dict.brandPage.campaignsHeader} ({recalls.length})</span>
+            <span>{formatText(dict.brandPage.campaignsHeader, { brand: brand.brand })} ({recalls.length})</span>
           </h2>
         </div>
 
@@ -265,7 +266,7 @@ export default async function BrandPage({
 
                   {r.product && (
                     <h3 className="text-base font-bold text-[var(--text-primary)] group-hover:text-accent transition-colors">
-                      {r.product}
+                      {productLabel(r.product, locale)}
                     </h3>
                   )}
 

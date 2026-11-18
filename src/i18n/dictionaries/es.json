@@ -73,16 +73,6 @@
     "brands": "Marcas",
     "safetyGate": "Safety Gate UE"
   },
-  "risks": {
-    "Injuries": "Lesiones",
-    "Fire": "Incendio",
-    "Fire, Injuries": "Incendio y Lesiones",
-    "Environment": "Medio Ambiente",
-    "Burns": "Quemaduras",
-    "Chemical": "Químico",
-    "Burns, Fire": "Quemaduras e Incendio",
-    "Other": "Otros riesgos"
-  },
   "header": {
     "sectionsLabel": "Secciones",
     "themeToLight": "Modo claro",

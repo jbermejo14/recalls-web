@@ -3,6 +3,7 @@ import InternalLink from '../../../components/InternalLink';
 import { notFound } from 'next/navigation';
 import { ShieldAlert, Car, Calendar, ExternalLink, ArrowLeft, Globe, Wrench, AlertTriangle, ShieldCheck, FileText, CheckCircle2 } from 'lucide-react';
 import { getLocale } from '../../../lib/site';
+import { riskLabel, countryLabel, productLabel } from '../../../lib/labels';
 import { getDictionary, formatText } from '../../../i18n/get-dictionary';
 import { getSafetyGateDataset, getRecallBySlug, getBrandBySlug } from '../../../lib/safety-gate-service';
 import { buildPageMetadata } from '../../../lib/seo';
@@ -32,7 +33,8 @@ export async function generateMetadata({
   const recall = getRecallBySlug(slug);
   if (!recall) return {};
 
-  const dict = getDictionary(getLocale());
+  const locale = getLocale();
+  const dict = getDictionary(locale);
   const primaryModel = recall.models[0] || '';
   const brandAndModel = primaryModel ? `${recall.brand} ${primaryModel}` : recall.brand;
 
@@ -42,7 +44,7 @@ export async function generateMetadata({
     models: recall.models.join(', ') || ''
   })}`;
 
-  const description = `${recall.brand} (${recall.caseNumber}): ${recall.riskType}. ${recall.danger.slice(0, 140)}...`;
+  const description = `${recall.brand} (${recall.caseNumber}): ${riskLabel(recall.riskType, locale)}. ${recall.danger.slice(0, 140)}...`;
 
   return buildPageMetadata({
     path: `/campana/${slug}`,
@@ -112,7 +114,7 @@ export default async function CampaignPage({
 
             {recall.product && (
               <div className="text-sm text-[var(--text-secondary)] font-medium">
-                {recall.product}
+                {productLabel(recall.product, locale)}
               </div>
             )}
           </div>
@@ -188,7 +190,7 @@ export default async function CampaignPage({
             <div>
               <dt className="text-[var(--text-muted)] font-semibold">{dict.campaignPage.notifyingCountry}</dt>
               <dd className="font-bold text-[var(--text-primary)] mt-0.5">
-                {recall.notifyingCountry || 'UE'}
+                {countryLabel(recall.notifyingCountry, locale) || 'UE'}
               </dd>
             </div>
 
@@ -196,7 +198,7 @@ export default async function CampaignPage({
               <div>
                 <dt className="text-[var(--text-muted)] font-semibold">{dict.campaignPage.countryOfOrigin}</dt>
                 <dd className="font-bold text-[var(--text-primary)] mt-0.5">
-                  {recall.countryOfOrigin}
+                  {countryLabel(recall.countryOfOrigin, locale)}
                 </dd>
               </div>
             )}

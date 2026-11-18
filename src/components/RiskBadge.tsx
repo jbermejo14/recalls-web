@@ -1,6 +1,6 @@
 import { Flame, AlertTriangle, Leaf, Zap } from 'lucide-react';
 import type { Locale } from '../lib/site';
-import { getDictionary } from '../i18n/get-dictionary';
+import { riskLabel } from '../lib/labels';
 
 type RiskLevel = 'fire' | 'injuries' | 'environment' | 'other';
 
@@ -11,28 +11,12 @@ const RISK_TAG_CLASSES: Record<RiskLevel, string> = {
   other: 'tag'
 };
 
-const RISK_LABELS: Record<Exclude<RiskLevel, 'other'>, Record<Locale, string>> = {
-  fire: { es: 'Incendio', en: 'Fire' },
-  injuries: { es: 'Lesiones', en: 'Injuries' },
-  environment: { es: 'Medio Ambiente', en: 'Environment' }
-};
-
-const FIRE_AND_INJURIES_LABEL: Record<Locale, string> = { es: 'Incendio y Lesiones', en: 'Fire & Injuries' };
-
 function riskLevelOf(risk: string): RiskLevel {
   const normalized = risk.toLowerCase();
   if (normalized.includes('fire') || normalized.includes('burn')) return 'fire';
   if (normalized.includes('injur')) return 'injuries';
   if (normalized.includes('environ')) return 'environment';
   return 'other';
-}
-
-function riskLabelOf(risk: string, level: RiskLevel, lang: Locale): string {
-  const dictionaryLabel = (getDictionary(lang).risks as Record<string, string>)[risk];
-  if (dictionaryLabel) return dictionaryLabel;
-  const normalized = risk.toLowerCase();
-  if (level === 'fire' && normalized.includes('injur')) return FIRE_AND_INJURIES_LABEL[lang];
-  return level === 'other' ? risk : RISK_LABELS[level][lang];
 }
 
 function RiskIcon({ level }: { level: RiskLevel }) {
@@ -58,7 +42,7 @@ export default function RiskBadge({
   return (
     <span className={`${RISK_TAG_CLASSES[level]} ${sizeClass} inline-flex items-center gap-1.5 whitespace-normal font-bold uppercase tracking-wider`}>
       <RiskIcon level={level} />
-      <span>{riskLabelOf(risk || '', level, lang)}</span>
+      <span>{riskLabel(risk || '', lang)}</span>
     </span>
   );
 }

@@ -52,6 +52,21 @@ describe('Normalizer & Slugs Unit Tests', () => {
     assert.ok(volvoModels.length >= 8);
   });
 
+  test('extractModels no divide por comas dentro de paréntesis', () => {
+    const models = extractModels('Mazda', 'Passenger car 323 (BG, BA), 626 (GE)', '', '');
+    assert.deepEqual(models, ['323 (BG, BA)', '626 (GE)']);
+  });
+
+  test('extractModels tolera un paréntesis sin cerrar', () => {
+    const models = extractModels('Mazda', 'Passenger car 323 (BG, BA, 626', '', '');
+    assert.deepEqual(models, ['323 (BG', 'BA', '626']);
+  });
+
+  test('extractModels respeta paréntesis anidados y delimitadores dentro de paréntesis', () => {
+    assert.deepEqual(extractModels('Mazda', 'Passenger car A (B (x, y), z), C', '', ''), ['A (B (x, y), z)', 'C']);
+    assert.deepEqual(extractModels('Mazda', 'Passenger car Zorba (X83/X84)', '', ''), ['Zorba (X83/X84)']);
+  });
+
   test('extractModels parses models with quotes and and-conjunctions', () => {
     const nissanModels = extractModels('Nissan', 'Van “Primastar”', '', 'Primastar X83');
     assert.deepEqual(nissanModels, ['Primastar']);

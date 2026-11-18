@@ -52,6 +52,43 @@ export function normalizeBrand(rawBrand: string, fallbackText: string = ''): str
     .join(' ');
 }
 
+// Delimitadores entre modelos: coma, "and", "&", "y" y "/".
+const NORMALIZER_DELIMITERS = /,|\band\b|&|\by\b|\//i;
+// Versión adherente (sticky): comprueba si hay un delimitador justo en `lastIndex`.
+const NORMALIZER_DELIMITER_AT_POSITION = /,|\band\b|&|\by\b|\//iy;
+
+function normalizerCleanChunks(chunks: string[]): string[] {
+  return chunks.map(chunk => chunk.trim()).filter(Boolean);
+}
+
+/**
+ * Divide un texto de modelos por los delimitadores solo a profundidad 0 de paréntesis.
+ * Si los paréntesis quedan sin cerrar, vuelve al partido simple por todos los delimitadores.
+ */
+function normalizerSplitModelText(text: string): string[] {
+  const chunks: string[] = [];
+  let depth = 0;
+  let chunkStart = 0;
+  let index = 0;
+  while (index < text.length) {
+    const char = text[index];
+    if (char === '(') depth++;
+    if (char === ')' && depth > 0) depth--;
+    NORMALIZER_DELIMITER_AT_POSITION.lastIndex = index;
+    const delimiter = depth === 0 ? NORMALIZER_DELIMITER_AT_POSITION.exec(text) : null;
+    if (delimiter) {
+      chunks.push(text.slice(chunkStart, index));
+      index += delimiter[0].length;
+      chunkStart = index;
+    } else {
+      index++;
+    }
+  }
+  chunks.push(text.slice(chunkStart));
+  if (depth !== 0) return normalizerCleanChunks(text.split(NORMALIZER_DELIMITERS));
+  return normalizerCleanChunks(chunks);
+}
+
 export function extractModels(
   brand: string,
   rawProduct: string,
@@ -104,10 +141,7 @@ export function extractModels(
   sourceText = sourceText.replace(/^[“”"'«»]+|[“”"'«»]+$/g, '').trim();
 
   // Split on delimiters (commas, "and", "&", " y ")
-  const chunks = sourceText
-    .split(/,|\band\b|&|\by\b|\//i)
-    .map(s => s.trim())
-    .filter(Boolean);
+  const chunks = normalizerSplitModelText(sourceText);
 
   const genericSet = new Set(modelRules.genericTerms.map(t => t.toLowerCase()));
 
