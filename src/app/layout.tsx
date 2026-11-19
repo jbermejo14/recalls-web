@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AdSenseScript, { getAdSenseClient } from '../components/AdSenseScript';
+import { getFooterNetworkSections } from '../lib/network';
 import { getLocale, getSiteUrl, SITE_NAME } from '../lib/site';
 import './globals.css';
 
@@ -70,7 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Header />
         <main className="flex-1">{children}</main>
-        <Footer showConsent={getAdSenseClient() !== null} />
+        <Footer showConsent={getAdSenseClient() !== null} networkSections={getFooterNetworkSections()} />
         <AdSenseScript />
       </body>
     </html>

@@ -146,3 +146,10 @@ Bloques manuales de AdSense según la sección 8 de `../ododex-sitio/ARCHITECTUR
 
 - Sin anuncios: `/aviso-legal`, `/privacidad`, `/cookies` y la 404.
 - Pruebas: `tests/ad-slot.test.tsx`.
+
+## 6. Enlaces de red de Ododex (2026-11-19)
+
+- `src/lib/network.ts` lee en compilación el JSON de `ODODEX_RED_ENLACES` (formato en `../ododex-sitio/ARCHITECTURE.md` §10), con caché por ruta. Sin variable o sin fichero devuelve `null`; JSON inválido o `version !== 1` lanza un `Error` en español.
+- Esta web solo recibe el pie (no hay enlaces por marca): `src/components/Footer.tsx` (parámetro `networkSections`, que pasa `src/app/layout.tsx` desde `getFooterNetworkSections()`) pinta « Otras webs de Ododex » con las secciones sin la propia, con `<a href>` tal cual (son de otra sección: sin `next/link` ni `assetPath`). Sin red no se pinta.
+- Solo en la compilación española: con `RECALLS_LANG=en` `getFooterNetworkSections()` devuelve `null`, porque las webs de la red están en español. El rótulo del bloque no está en los diccionarios por ese motivo.
+- Pruebas: `tests/network.test.tsx`.
