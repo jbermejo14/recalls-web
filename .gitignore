@@ -13,6 +13,7 @@ dist/
 # Raw XML files & data exports (must not be committed)
 raw-data/
 *.xml
+!tests/fixtures/*.xml
 *.log
 
 # Environment variables

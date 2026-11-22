@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_NAME, absoluteUrl, alternateUrls, getLocale } from './site';
+import { SITE_NAME, absoluteUrl, alternateUrls, getLocale, getSiteUrl } from './site';
 
 const OPEN_GRAPH_LOCALES = { es: 'es_ES', en: 'en_US' } as const;
 
@@ -16,6 +16,7 @@ export function buildPageMetadata({
   ogType?: 'website' | 'article';
 }): Metadata {
   const canonical = absoluteUrl(path);
+  const ogImageUrl = `${getSiteUrl()}/brand/ododex-og.png`;
 
   return {
     title,
@@ -30,12 +31,21 @@ export function buildPageMetadata({
       url: canonical,
       siteName: SITE_NAME,
       locale: OPEN_GRAPH_LOCALES[getLocale()],
-      type: ogType
+      type: ogType,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${title} · ${SITE_NAME}`
+        }
+      ]
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title,
-      description
+      description,
+      images: [ogImageUrl]
     }
   };
 }

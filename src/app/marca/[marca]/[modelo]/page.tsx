@@ -84,6 +84,7 @@ export default async function ModelPage({
 
   const sortedRisks = Object.entries(risksBreakdown).sort((a, b) => b[1] - a[1]);
   const sortedYears = Object.entries(yearsBreakdown).sort((a, b) => b[0].localeCompare(a[0]));
+  const siblingModels = brand.models.filter((m) => m.slug !== model.slug);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
@@ -239,6 +240,89 @@ export default async function ModelPage({
               </div>
             </InternalLink>
           ))}
+        </div>
+      </section>
+
+      {/* Sibling Models */}
+      {siblingModels.length > 0 && (
+        <section className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 space-y-4">
+          <h2 className="text-lg font-black text-[var(--text-primary)] flex items-center gap-2">
+            <Layers className="w-5 h-5 text-accent" />
+            <span>
+              {locale === 'es'
+                ? `Otros modelos de ${brand.brand} con avisos Safety Gate`
+                : `Other ${brand.brand} models with Safety Gate recalls`}
+            </span>
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pt-2">
+            {siblingModels.slice(0, 12).map((m) => (
+              <InternalLink
+                key={m.slug}
+                href={`/marca/${brand.brandSlug}/${m.slug}`}
+                className="p-3 rounded-xl bg-[var(--bg-body)] border border-[var(--border-color)] hover:border-accent transition-colors block text-left"
+              >
+                <div className="text-sm font-bold text-[var(--text-primary)] truncate">
+                  {m.name}
+                </div>
+                <div className="text-xs text-[var(--text-muted)] mt-1">
+                  {m.recallsCount} {locale === 'es' ? 'campañas' : 'recalls'}
+                </div>
+              </InternalLink>
+            ))}
+          </div>
+          {siblingModels.length > 12 && (
+            <div className="pt-2">
+              <InternalLink
+                href={`/marca/${brand.brandSlug}`}
+                className="text-xs font-semibold text-accent hover:underline inline-flex items-center gap-1"
+              >
+                <span>
+                  {locale === 'es'
+                    ? `Ver todos los ${siblingModels.length + 1} modelos de ${brand.brand}`
+                    : `View all ${siblingModels.length + 1} ${brand.brand} models`}
+                </span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </InternalLink>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* Red Ododex Cross-linking */}
+      <section className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 space-y-3">
+        <div className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-wider">
+          <ShieldCheck className="w-4 h-4" />
+          <span>{locale === 'es' ? 'Red Ododex · Trámites y Guías del Vehículo' : 'Ododex Network · Vehicle Tools & Guides'}</span>
+        </div>
+        <h3 className="text-base sm:text-lg font-bold text-[var(--text-primary)]">
+          {locale === 'es'
+            ? `¿Vas a comprar un ${brand.brand} ${model.name} de segunda mano?`
+            : `Buying a used ${brand.brand} ${model.name}?`}
+        </h3>
+        <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          {locale === 'es'
+            ? `Además de revisar las llamadas a revisión oficiales del sistema Safety Gate, comprueba el Impuesto de Transmisiones Patrimoniales (ITP) de tu comunidad autónoma y las tablas oficiales de Hacienda.`
+            : `Along with Safety Gate recall checks, calculate transfer taxes and official valuation tables before closing the purchase.`}
+        </p>
+        <div className="flex flex-wrap gap-3 pt-2">
+          <a
+            href="https://ododex.com/es/impuestos"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-accent text-white font-semibold text-xs hover:opacity-90 transition-opacity"
+          >
+            <span>{locale === 'es' ? 'Calculadora ITP Coche Usado' : 'Car Transfer Tax Calculator'}</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+          <a
+            href="https://ododex.com/es/gasolineras"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[var(--bg-body)] border border-[var(--border-color)] text-[var(--text-primary)] font-semibold text-xs hover:border-accent transition-colors"
+          >
+            <span>{locale === 'es' ? 'Gasolineras Baratas España' : 'Fuel Prices Spain'}</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
         </div>
       </section>
 
