@@ -14,6 +14,7 @@ import {
   seoCampaignTitle,
   seoCountWord,
   seoFitDescription,
+  seoModelDescription,
   seoModelTitle,
   seoShortenName
 } from '../src/lib/seo-text';
@@ -159,7 +160,7 @@ test('seoBrandAndModel no repite la marca', () => {
 test('títulos cortos: se usa la plantilla completa en los dos idiomas', () => {
   assert.equal(seoBrandTitle('Seat', 'es'), 'Llamadas a revisión de Seat');
   assert.equal(seoBrandTitle('Seat', 'en'), 'Seat Recall Campaigns');
-  assert.equal(seoModelTitle('Seat', 'Ibiza', 'es'), 'Llamadas a revisión del Seat Ibiza');
+  assert.equal(seoModelTitle('Seat', 'Ibiza', 'es'), 'Llamadas a revisión de Seat Ibiza');
   assert.equal(seoModelTitle('Seat', 'Ibiza', 'en'), 'Seat Ibiza Recall Campaigns');
   assert.equal(seoCampaignTitle(seoTestRecall({ models: ['S80'] }), 'es'), 'Campaña Safety Gate 0014/11: Volvo S80');
 });
@@ -187,4 +188,19 @@ test('seoFitDescription: base en rango, relleno para las cortas, null si nada ca
   const filled = seoFitDescription(['a'.repeat(SEO_DESCRIPTION_MIN - 5)], [' relleno largo largo', ' bien.']);
   assert.ok(filled !== null && filled.length >= SEO_DESCRIPTION_MIN && filled.length <= SEO_DESCRIPTION_MAX);
   assert.equal(seoFitDescription(['a'.repeat(SEO_DESCRIPTION_MAX + 1)], [' x']), null);
+});
+
+test('títulos y descripciones en español no usan el anglicismo "recall"', () => {
+  const brandTitle = seoBrandTitle(SEO_TEST_LONG_BRAND, 'es');
+  const modelTitle = seoModelTitle('Citroen, Opel, Peugeot', 'Peugeot C4 Picasso B78', 'es');
+  const campaignTitle = seoCampaignTitle(seoTestRecall({ brand: SEO_TEST_LONG_BRAND, models: ['A'.repeat(SEO_TEST_WORST_LENGTH)] }), 'es');
+  for (const title of [brandTitle, modelTitle, campaignTitle]) {
+    assert.doesNotMatch(title, /recall/i, title);
+  }
+});
+
+test('la descripción de un modelo sin años no deja comas vacías', () => {
+  const description = seoModelDescription('Seat', 'Ibiza', 3, '', 'es');
+  assert.doesNotMatch(description, /,\s*,/, description);
+  assert.doesNotMatch(description, /\(\)/, description);
 });

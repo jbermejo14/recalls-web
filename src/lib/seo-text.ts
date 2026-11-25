@@ -16,6 +16,9 @@ const SEO_TITLE_SUFFIX = ` | ${SITE_NAME}`;
 // Tope de las partes variables cuando el nombre completo no cabe en ningún título (reservan sitio al resto).
 const SEO_SHORT_BRAND_MAX = 22;
 const SEO_SHORT_MODEL_MAX = 22;
+// Tope del último intento de un título de modelo: marcas compuestas con modelos largos no caben con los de arriba.
+const SEO_TIGHT_BRAND_MAX = 12;
+const SEO_TIGHT_MODEL_MAX = 16;
 const SEO_SHORT_CAMPAIGN_BRAND_MAX = 28;
 const SEO_SHORT_DESCRIPTION_NAME_MAX = 40;
 const SEO_MIN_SEGMENT_LENGTH = 3;
@@ -110,31 +113,34 @@ function seoPickTitle(candidates: string[], brand: string): string | null {
 
 /** Prueba cada intento en orden (de nombres completos a nombres acortados) y devuelve el primer título que cabe. */
 function seoFirstFit(attempts: Array<() => string[]>, brand: string): string {
-  let last: string[] = [];
+  const tried: string[] = [];
   for (const attempt of attempts) {
-    last = attempt();
-    const fit = seoPickTitle(last, brand);
+    const candidates = attempt();
+    const fit = seoPickTitle(candidates, brand);
     if (fit !== null) return fit;
+    tried.push(...candidates);
   }
-  return last[last.length - 1];
+  throw new Error(`Ninguna variante de título cabe en ${SEO_TITLE_MAX} caracteres con la marca: ${tried.join(' / ')}. Añade una variante más corta.`);
 }
 
 /** Título (sin « | Ododex») de la página de una marca. */
 export function seoBrandTitle(brand: string, locale: Locale): string {
   const build = (name: string): string[] =>
-    locale === 'es' ? [`Llamadas a revisión de ${name}`, `Recalls de ${name}`, `${name}: recalls`] : [`${name} Recall Campaigns`, `${name} Recalls`];
+    locale === 'es' ? [`Llamadas a revisión de ${name}`, `Revisiones de ${name}`, `${name}: revisiones`] : [`${name} Recall Campaigns`, `${name} Recalls`];
   return seoFirstFit([() => build(seoClean(brand)), () => build(seoShortenName(brand, SEO_SHORT_BRAND_MAX))], brand);
 }
 
 /** Título (sin « | Ododex») de la página de un modelo. */
 export function seoModelTitle(brand: string, model: string, locale: Locale): string {
   const build = (name: string): string[] =>
-    locale === 'es' ? [`Llamadas a revisión del ${name}`, `Recalls del ${name}`, `${name}: recalls`] : [`${name} Recall Campaigns`, `${name} Recalls`];
+    locale === 'es' ? [`Llamadas a revisión de ${name}`, `Revisiones de ${name}`, `${name}: revisiones`] : [`${name} Recall Campaigns`, `${name} Recalls`];
   const shortBrand = seoShortenName(brand, SEO_SHORT_BRAND_MAX);
+  const tightBrand = seoShortenName(brand, SEO_TIGHT_BRAND_MAX);
   return seoFirstFit(
     [
       () => build(seoBrandAndModel(brand, model)),
-      () => build(seoBrandAndModel(shortBrand, seoShortenName(model, SEO_SHORT_MODEL_MAX)))
+      () => build(seoBrandAndModel(shortBrand, seoShortenName(model, SEO_SHORT_MODEL_MAX))),
+      () => build(seoBrandAndModel(tightBrand, seoShortenName(model, SEO_TIGHT_MODEL_MAX)))
     ],
     brand
   );
@@ -147,7 +153,8 @@ function seoCampaignModels(brand: string, models: string[]): string {
 
 function seoCampaignCandidates(recall: SafetyGateRecall, brand: string, models: string[], locale: Locale): string[] {
   const full = locale === 'es' ? 'Campaña Safety Gate' : 'Safety Gate Recall';
-  const prefixes = [full, 'Safety Gate', 'Recall'].map(prefix => `${prefix} ${recall.caseNumber}: `);
+  const lastResort = locale === 'es' ? 'Campaña' : 'Recall';
+  const prefixes = [full, 'Safety Gate', lastResort].map(prefix => `${prefix} ${recall.caseNumber}: `);
   const withModels = models.length > 0 ? [seoBrandAndModel(brand, seoCampaignModels(brand, models))] : [];
   const withFirstModel = models.length > 1 ? [seoBrandAndModel(brand, models[0])] : [];
   const subjects = [...withModels, ...withFirstModel, brand];
@@ -243,18 +250,21 @@ export function seoBrandDescription(brand: string, campaigns: number, models: nu
 /** Descripción (120-160) de la página de un modelo; `years` es el intervalo "2011-2019" o el año único. */
 export function seoModelDescription(brand: string, model: string, campaigns: number, years: string, locale: Locale): string {
   const campaignsText = seoCampaignsText(campaigns, locale);
+  // Sin años (datos sin fecha de publicación) se omite el fragmento entero, no solo el valor.
+  const yearsList = years === '' ? '' : `, ${years}`;
+  const yearsParens = years === '' ? '' : ` (${years})`;
   const build = (name: string): string[] =>
     locale === 'es'
       ? [
-          `Historial de alertas de seguridad del ${name}: ${campaignsText} de llamada a revisión en Safety Gate (UE), ${years}, con riesgos y medidas.`,
-          `${name}: ${campaignsText} de llamada a revisión en Safety Gate (UE), ${years}. Riesgos, fechas y medidas adoptadas.`,
-          `${name}: ${campaignsText} de llamada a revisión en Safety Gate (UE) (${years}).`,
+          `Historial de alertas de seguridad de ${name}: ${campaignsText} de llamada a revisión en Safety Gate (UE)${yearsList}, con riesgos y medidas.`,
+          `${name}: ${campaignsText} de llamada a revisión en Safety Gate (UE)${yearsList}. Riesgos, fechas y medidas adoptadas.`,
+          `${name}: ${campaignsText} de llamada a revisión en Safety Gate (UE)${yearsParens}.`,
           `${name}: ${campaignsText} en Safety Gate.`
         ]
       : [
-          `Safety recall history for the ${name}: ${campaignsText} in the EU Safety Gate system, ${years}, with the risks and measures involved.`,
-          `${name}: ${campaignsText} in the EU Safety Gate system, ${years}. Risks, dates and measures adopted.`,
-          `${name}: ${campaignsText} in the EU Safety Gate system (${years}).`,
+          `Safety recall history for the ${name}: ${campaignsText} in the EU Safety Gate system${yearsList}, with the risks and measures involved.`,
+          `${name}: ${campaignsText} in the EU Safety Gate system${yearsList}. Risks, dates and measures adopted.`,
+          `${name}: ${campaignsText} in the EU Safety Gate system${yearsParens}.`,
           `${name}: ${campaignsText} in Safety Gate.`
         ];
   const shortName = seoBrandAndModel(
