@@ -3,10 +3,10 @@ import InternalLink from '../../../components/InternalLink';
 import { notFound } from 'next/navigation';
 import { ShieldAlert, Car, Calendar, ExternalLink, ArrowLeft, Globe, Wrench, AlertTriangle, ShieldCheck, FileText, CheckCircle2 } from 'lucide-react';
 import { getLocale } from '../../../lib/site';
-import { riskLabel, countryLabel, productLabel } from '../../../lib/labels';
-import { getDictionary, formatText } from '../../../i18n/get-dictionary';
+import { countryLabel, productLabel } from '../../../lib/labels';
+import { getDictionary } from '../../../i18n/get-dictionary';
 import { getSafetyGateDataset, getRecallBySlug, getBrandBySlug } from '../../../lib/safety-gate-service';
-import { buildPageMetadata } from '../../../lib/seo';
+import { campaignPageMetadata } from '../../../lib/page-metadata';
 import Breadcrumbs from '../../../components/Breadcrumbs';
 import AdSlot from '../../../components/AdSlot';
 import DisclaimerBanner from '../../../components/DisclaimerBanner';
@@ -29,29 +29,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-
-  const recall = getRecallBySlug(slug);
-  if (!recall) return {};
-
-  const locale = getLocale();
-  const dict = getDictionary(locale);
-  const primaryModel = recall.models[0] || '';
-  const brandAndModel = primaryModel ? `${recall.brand} ${primaryModel}` : recall.brand;
-
-  const title = `${formatText(dict.campaignPage.title, {
-    caseNumber: recall.caseNumber,
-    brand: recall.brand,
-    models: recall.models.join(', ') || ''
-  })}`;
-
-  const description = `${recall.brand} (${recall.caseNumber}): ${riskLabel(recall.riskType, locale)}. ${recall.danger.slice(0, 140)}...`;
-
-  return buildPageMetadata({
-    path: `/campana/${slug}`,
-    title,
-    description,
-    ogType: 'article'
-  });
+  return campaignPageMetadata(slug);
 }
 
 export default async function CampaignPage({

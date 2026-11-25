@@ -6,7 +6,7 @@ import { getLocale } from '../../../lib/site';
 import { riskLabel, countryLabel, productLabel } from '../../../lib/labels';
 import { getDictionary, formatText } from '../../../i18n/get-dictionary';
 import { getAllBrands, getBrandBySlug } from '../../../lib/safety-gate-service';
-import { buildPageMetadata } from '../../../lib/seo';
+import { brandPageMetadata } from '../../../lib/page-metadata';
 import Breadcrumbs from '../../../components/Breadcrumbs';
 import AdSlot from '../../../components/AdSlot';
 import DisclaimerBanner from '../../../components/DisclaimerBanner';
@@ -29,23 +29,7 @@ export async function generateMetadata({
   params: Promise<{ marca: string }>;
 }): Promise<Metadata> {
   const { marca } = await params;
-
-  const brandData = getBrandBySlug(marca);
-  if (!brandData) return {};
-
-  const dict = getDictionary(getLocale());
-  const brandName = brandData.brand.brand;
-
-  const title = `${formatText(dict.brandPage.title, { brand: brandName })}`;
-  const description = formatText(dict.brandPage.description, {
-    brand: brandName
-  });
-
-  return buildPageMetadata({
-    path: `/marca/${marca}`,
-    title,
-    description
-  });
+  return brandPageMetadata(marca);
 }
 
 export default async function BrandPage({

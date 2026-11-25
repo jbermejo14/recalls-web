@@ -1,7 +1,14 @@
 import type { Metadata } from 'next';
-import { SITE_NAME, absoluteUrl, alternateUrls, getLocale, getSiteUrl } from './site';
+import { SITE_NAME, absoluteUrl, alternateUrls, getLocale } from './site';
 
-const OPEN_GRAPH_LOCALES = { es: 'es_ES', en: 'en_US' } as const;
+/** Ruta de la imagen social, dentro de public/ (cuelga de la ruta base de la sección). */
+export const OG_IMAGE_PATH = '/brand/ododex-og.png';
+export const OG_IMAGE_WIDTH = 1200;
+export const OG_IMAGE_HEIGHT = 630;
+
+// Open Graph y Twitter no aplican la plantilla de título del layout: el nombre se añade aquí.
+const SITE_SUFFIX = ` | ${SITE_NAME}`;
+const OPEN_GRAPH_LOCALES = { es: 'es_ES', en: 'en_GB' } as const;
 
 /** Metadatos de una página: canonical, hreflang, Open Graph y Twitter, en el idioma de la compilación. */
 export function buildPageMetadata({
@@ -16,7 +23,8 @@ export function buildPageMetadata({
   ogType?: 'website' | 'article';
 }): Metadata {
   const canonical = absoluteUrl(path);
-  const ogImageUrl = `${getSiteUrl()}/brand/ododex-og.png`;
+  const ogImageUrl = absoluteUrl(OG_IMAGE_PATH);
+  const socialTitle = title.endsWith(SITE_SUFFIX) ? title : `${title}${SITE_SUFFIX}`;
 
   return {
     title,
@@ -26,7 +34,7 @@ export function buildPageMetadata({
       languages: alternateUrls(path)
     },
     openGraph: {
-      title,
+      title: socialTitle,
       description,
       url: canonical,
       siteName: SITE_NAME,
@@ -35,15 +43,15 @@ export function buildPageMetadata({
       images: [
         {
           url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${title} · ${SITE_NAME}`
+          width: OG_IMAGE_WIDTH,
+          height: OG_IMAGE_HEIGHT,
+          alt: socialTitle
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title,
+      title: socialTitle,
       description,
       images: [ogImageUrl]
     }

@@ -6,7 +6,7 @@ import { getLocale } from '../../../../lib/site';
 import { riskLabel, countryLabel, productLabel } from '../../../../lib/labels';
 import { getDictionary, formatText } from '../../../../i18n/get-dictionary';
 import { getAllBrands, getModelBySlugs } from '../../../../lib/safety-gate-service';
-import { buildPageMetadata } from '../../../../lib/seo';
+import { modelPageMetadata } from '../../../../lib/page-metadata';
 import Breadcrumbs from '../../../../components/Breadcrumbs';
 import AdSlot from '../../../../components/AdSlot';
 import DisclaimerBanner from '../../../../components/DisclaimerBanner';
@@ -31,27 +31,7 @@ export async function generateMetadata({
   params: Promise<{ marca: string; modelo: string }>;
 }): Promise<Metadata> {
   const { marca, modelo } = await params;
-
-  const modelData = getModelBySlugs(marca, modelo);
-  if (!modelData) return {};
-
-  const dict = getDictionary(getLocale());
-  const { brand, model } = modelData;
-
-  const title = `${formatText(dict.modelPage.title, {
-    brand: brand.brand,
-    model: model.name
-  })}`;
-  const description = formatText(dict.modelPage.description, {
-    brand: brand.brand,
-    model: model.name
-  });
-
-  return buildPageMetadata({
-    path: `/marca/${marca}/${modelo}`,
-    title,
-    description
-  });
+  return modelPageMetadata(marca, modelo);
 }
 
 export default async function ModelPage({
