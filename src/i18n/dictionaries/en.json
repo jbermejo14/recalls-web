@@ -1,5 +1,5 @@
 {
-  "siteTitle": "Vehicle Recall Campaigns Consultant",
+  "siteTitle": "Vehicle recall checker",
   "siteTagline": "Check official EU Safety Gate vehicle recall campaigns and safety alerts by make and model. Verify if your car or motorbike has active manufacturer recalls.",
   "searchPlaceholder": "Search by make, model (e.g. 3008, Golf, C-Class), recall code or case number...",
   "searchBtn": "Search",
@@ -58,7 +58,7 @@
     "freeRepairNotice": "Within the European Union, safety recall campaigns must be corrected free of charge by the vehicle manufacturer or its authorized dealer network."
   },
   "home": {
-    "heroTitle": "Vehicle Recall Campaigns Consultant",
+    "heroTitle": "Vehicle recall checker",
     "heroSubtitle": "Check motor vehicle safety defects and recall campaigns notified to the European Commission for thousands of vehicles and makes.",
     "topBrandsTitle": "Makes with most registered recall campaigns",
     "latestRecallsTitle": "Latest published safety recall alerts",

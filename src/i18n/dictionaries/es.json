@@ -1,5 +1,5 @@
 {
-  "siteTitle": "Consultor de Campañas de Llamada a Revisión (Recalls)",
+  "siteTitle": "Llamadas a revisión de vehículos",
   "siteTagline": "Consulta las llamadas a revisión y alertas de seguridad de coches y motos oficiales de la UE (Safety Gate). Historial de campañas por marca y modelo.",
   "searchPlaceholder": "Buscar por marca, modelo (ej: 3008, Golf, Clase C), código de recall o caso...",
   "searchBtn": "Buscar",
@@ -58,7 +58,7 @@
     "freeRepairNotice": "En la Unión Europea, las llamadas a revisión por motivos de seguridad deben ser subsanadas gratuitamente por el fabricante o su red de concesionarios oficiales."
   },
   "home": {
-    "heroTitle": "Consultor de Campañas de Llamada a Revisión",
+    "heroTitle": "Llamadas a revisión de vehículos",
     "heroSubtitle": "Comprueba los defectos de seguridad notificados ante la Comisión Europea para miles de vehículos y marcas.",
     "topBrandsTitle": "Marcas con mayor historial de campañas registradas",
     "latestRecallsTitle": "Últimas alertas de llamadas a revisión publicadas",
